@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Filter,
   X,
@@ -8,7 +8,8 @@ import {
   ChevronDown,
   ChevronUp,
   SlidersHorizontal,
-  Sparkles
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import type { Product, ColorKey } from '@/data/products';
 import { PRODUCTS, COLORS } from '@/data/products';
@@ -67,6 +68,8 @@ const SMART_FEATURES = [
   },
 ];
 
+const ITEMS_PER_PAGE = 9;
+
 const ALL_COLORS: ColorKey[] = Array.from(
   new Set(PRODUCTS.flatMap((p) => p.colors))
 ) as ColorKey[];
@@ -80,6 +83,9 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const gridTopRef = useRef<HTMLDivElement>(null);
 
   // Collapsible section state for sidebar
   const [openSections, setOpenSections] = useState({
@@ -88,6 +94,19 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
     laptop: true,
     features: true,
   });
+
+  // Reset to page 1 whenever search, filters, category or sorting changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    category,
+    selectedPrices,
+    selectedColors,
+    selectedLaptopSizes,
+    selectedFeatures,
+    searchQuery,
+    sortBy,
+  ]);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -223,6 +242,32 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
     selectedFeatures,
     sortBy,
   ]);
+
+  // Pagination Calculations
+  const totalPages = useMemo(() => {
+    return Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+  }, [filteredProducts]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    setCurrentPage(page);
+    if (gridTopRef.current) {
+      gridTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      document.querySelector('#shop')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   // Sidebar / Drawer Filter Content
   const renderFilterControls = () => (
@@ -469,7 +514,18 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
 
           <div className="flex items-center justify-between gap-4 sm:justify-end">
             <span className="text-xs font-medium text-charcoal-800/60">
-              Showing <strong className="text-charcoal-900">{filteredProducts.length}</strong> of {PRODUCTS.length}
+              Showing{' '}
+              <strong className="text-charcoal-900">
+                {filteredProducts.length > 0
+                  ? (currentPage - 1) * ITEMS_PER_PAGE + 1
+                  : 0}
+                -
+                {Math.min(
+                  currentPage * ITEMS_PER_PAGE,
+                  filteredProducts.length
+                )}
+              </strong>{' '}
+              of {filteredProducts.length}
             </span>
 
             {/* Sort Dropdown */}
@@ -563,7 +619,7 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
         )}
 
         {/* Main Catalog Layout (Sidebar + Product Grid) */}
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[250px_1fr]">
+        <div ref={gridTopRef} className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[250px_1fr] scroll-mt-28">
           {/* Desktop Left Sidebar */}
           <aside className="hidden lg:block">
             <div className="sticky top-28 rounded-2xl border border-charcoal-900/10 bg-cream-100 p-5 shadow-sm">
@@ -607,11 +663,66 @@ export function ShopSection({ onView }: { onView: (product: Product) => void }) 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} onView={onView} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+                  {paginatedProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} onView={onView} />
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-charcoal-900/10 pt-8 sm:flex-row">
+                    <div className="text-xs font-medium text-charcoal-800/60">
+                      Page <span className="font-semibold text-charcoal-900">{currentPage}</span> of{' '}
+                      <span className="font-semibold text-charcoal-900">{totalPages}</span> ({filteredProducts.length} items)
+                    </div>
+
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="flex items-center gap-1 rounded-full border border-charcoal-900/15 bg-cream-100 px-3.5 py-2 text-xs font-medium text-charcoal-900 transition-all hover:border-charcoal-900/40 hover:bg-cream-200 disabled:pointer-events-none disabled:opacity-40"
+                        aria-label="Previous page"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                        <span>Previous</span>
+                      </button>
+
+                      <div className="flex items-center gap-1 px-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
+                          const isActive = pageNum === currentPage;
+                          return (
+                            <button
+                              key={pageNum}
+                              onClick={() => handlePageChange(pageNum)}
+                              className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-medium transition-all ${
+                                isActive
+                                  ? 'bg-charcoal-900 text-cream-100 shadow-sm font-semibold'
+                                  : 'border border-transparent text-charcoal-800 hover:border-charcoal-900/20 hover:bg-charcoal-900/5'
+                              }`}
+                              aria-label={`Page ${pageNum}`}
+                              aria-current={isActive ? 'page' : undefined}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="flex items-center gap-1 rounded-full border border-charcoal-900/15 bg-cream-100 px-3.5 py-2 text-xs font-medium text-charcoal-900 transition-all hover:border-charcoal-900/40 hover:bg-cream-200 disabled:pointer-events-none disabled:opacity-40"
+                        aria-label="Next page"
+                      >
+                        <span>Next</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

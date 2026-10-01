@@ -15,10 +15,12 @@ export function ProductCard({ product, onView }: ProductCardProps) {
   const defaultColor = COLORS[product.defaultColor];
   const mainImage = imageForColor(product, product.defaultColor);
   const hoverImage = product.images[1] ?? mainImage;
+  const isNew = Boolean(product.isNewProduct);
+  const bgClass = isNew ? 'bg-[#f5f0e8]' : 'bg-white';
 
   return (
     <article className="group flex flex-col border-b border-charcoal-900/10 pb-7">
-      <div className="relative overflow-hidden bg-[#ede9e1] shadow-[0_1px_0_rgba(43,40,38,0.08)]">
+      <div className={`relative overflow-hidden ${bgClass} shadow-[0_1px_0_rgba(43,40,38,0.08)] transition-colors duration-300`}>
         <div className="relative aspect-square">
           <img
             src={mainImage}

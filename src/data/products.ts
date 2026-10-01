@@ -23,6 +23,7 @@ export interface Product {
   demoReviews:ProductReview[];
   category:'business'|'commuter'|'creator';
   popular?:boolean;
+  isNewProduct?:boolean;
 }
 
 export const COLORS:Record<ColorKey,{key:ColorKey;name:string;hex:string}>={
@@ -332,6 +333,7 @@ export const PRODUCTS:Product[] = [
     badge: 'Signature',
     category: 'business',
     popular: true,
+    isNewProduct: true,
     colors: ['black', 'graphite', 'navy', 'stone'],
     defaultColor: 'black',
     images: ['/images/products/nexus-axis.png'],
@@ -356,6 +358,7 @@ export const PRODUCTS:Product[] = [
     badge: 'Bestseller',
     category: 'commuter',
     popular: true,
+    isNewProduct: true,
     colors: ['black', 'graphite', 'navy', 'olive'],
     defaultColor: 'black',
     images: ['/images/products/nexus-transit-black.png', '/images/products/nexus-transit-graphite.png'],
@@ -383,6 +386,7 @@ export const PRODUCTS:Product[] = [
     reviews: 31,
     category: 'creator',
     popular: false,
+    isNewProduct: true,
     colors: ['charcoal', 'navy', 'taupe', 'sand'],
     defaultColor: 'charcoal',
     images: ['/images/products/nexus-studio.png'],
@@ -407,6 +411,7 @@ export const PRODUCTS:Product[] = [
     badge: 'New',
     category: 'creator',
     popular: true,
+    isNewProduct: true,
     colors: ['black', 'burgundy', 'brown', 'cream'],
     defaultColor: 'black',
     images: ['/images/products/nexus-form.png'],

@@ -62,6 +62,9 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
   const primaryAddToCartRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  const isNew = Boolean(product.isNewProduct);
+  const [bgMode, setBgMode] = useState<'cream' | 'white'>(isNew ? 'cream' : 'white');
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
@@ -74,6 +77,7 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
     setAdded(false);
     setZoomed(false);
     setShowStickyBar(false);
+    setBgMode(product.isNewProduct ? 'cream' : 'white');
 
     // Track recently viewed in localStorage
     recordRecentlyViewed(product.id);
@@ -155,30 +159,113 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
           <div className="grid gap-8 p-5 sm:p-8 lg:grid-cols-2 lg:gap-12">
             {/* Gallery */}
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <button onClick={() => setZoomed(true)} className="group/image relative block w-full overflow-hidden bg-[#ede9e1]" aria-label={`Enlarge ${product.name} image`}>
-                <img
-                  src={gallery[activeImage]}
-                  alt={`${product.name} product view ${activeImage + 1}`}
-                  className="aspect-square w-full object-contain p-3 nova-scale-in"
-                  key={`${color}-${activeImage}`}
-                  sizes="(min-width: 1024px) 560px, 100vw"
-                />
-                <span className="absolute bottom-4 right-4 flex items-center gap-2 bg-cream-100/90 px-3 py-2 text-xs font-medium text-charcoal-900 opacity-100 backdrop-blur sm:opacity-0 sm:transition-opacity sm:group-hover/image:opacity-100"><Maximize2 className="h-3.5 w-3.5" /> Enlarge</span>
-              </button>
-              {gallery.length > 1 && <div className="mt-4 grid grid-cols-6 gap-2">
-                {gallery.map((image, index) => (
-                  <button
-                    key={image}
-                    onClick={() => setActiveImage(index)}
-                    className={`overflow-hidden rounded-lg border-2 transition-all ${
-                      activeImage === index ? 'border-charcoal-900' : 'border-transparent opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <img src={image} alt={`${product.name} in ${imageLabel(image)}`} className="aspect-square w-full object-contain" loading="lazy" />
-                    <span className="block truncate px-1 pb-1 text-[9px] text-charcoal-800/60">{imageLabel(image)}</span>
-                  </button>
-                ))}
-              </div>}
+              <div className="relative">
+                <button
+                  onClick={() => setZoomed(true)}
+                  className={`group/image relative block w-full overflow-hidden transition-colors duration-300 ${
+                    bgMode === 'cream' ? 'bg-[#f5f0e8]' : 'bg-white'
+                  }`}
+                  aria-label={`Enlarge ${product.name} image`}
+                >
+                  <img
+                    src={gallery[activeImage]}
+                    alt={`${product.name} product view ${activeImage + 1}`}
+                    className="aspect-square w-full object-contain p-3 nova-scale-in"
+                    key={`${color}-${activeImage}-${bgMode}`}
+                    sizes="(min-width: 1024px) 560px, 100vw"
+                  />
+                  <span className="absolute bottom-4 right-4 flex items-center gap-2 bg-cream-100/90 px-3 py-2 text-xs font-medium text-charcoal-900 opacity-100 backdrop-blur sm:opacity-0 sm:transition-opacity sm:group-hover/image:opacity-100">
+                    <Maximize2 className="h-3.5 w-3.5" /> Enlarge
+                  </span>
+                </button>
+
+                {/* Original Look Comparison Toggle Inset for New Bags */}
+                {isNew && (
+                  <div className="absolute top-4 left-4 z-20 flex items-center gap-1 rounded-full border border-charcoal-900/15 bg-cream-100/90 p-1 shadow-md backdrop-blur">
+                    <span className="pl-2 text-[10px] font-semibold uppercase tracking-wider text-charcoal-800/60">
+                      Look:
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setBgMode('cream');
+                      }}
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                        bgMode === 'cream'
+                          ? 'bg-charcoal-900 text-cream-100 shadow-sm'
+                          : 'text-charcoal-800/70 hover:text-charcoal-900'
+                      }`}
+                    >
+                      Soft Cream
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setBgMode('white');
+                      }}
+                      className={`flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                        bgMode === 'white'
+                          ? 'bg-charcoal-900 text-cream-100 shadow-sm'
+                          : 'text-charcoal-800/70 hover:text-charcoal-900'
+                      }`}
+                    >
+                      <span>Original Look (White)</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {gallery.length > 1 && (
+                <div className="mt-4 grid grid-cols-6 gap-2">
+                  {gallery.map((image, index) => (
+                    <button
+                      key={image}
+                      onClick={() => setActiveImage(index)}
+                      className={`overflow-hidden rounded-lg border-2 transition-all ${
+                        activeImage === index
+                          ? 'border-charcoal-900'
+                          : 'border-transparent opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} in ${imageLabel(image)}`}
+                        className="aspect-square w-full object-contain"
+                        loading="lazy"
+                      />
+                      <span className="block truncate px-1 pb-1 text-[9px] text-charcoal-800/60">
+                        {imageLabel(image)}
+                      </span>
+                    </button>
+                  ))}
+                  {isNew && (
+                    <button
+                      onClick={() =>
+                        setBgMode((prev) => (prev === 'white' ? 'cream' : 'white'))
+                      }
+                      className={`overflow-hidden rounded-lg border-2 p-1 text-center transition-all ${
+                        bgMode === 'white'
+                          ? 'border-charcoal-900 bg-white'
+                          : 'border-charcoal-900/15 bg-[#f5f0e8] opacity-75 hover:opacity-100'
+                      }`}
+                      title="Compare with Original White Background"
+                    >
+                      <div className="aspect-square w-full rounded bg-white flex items-center justify-center border border-charcoal-900/10">
+                        <img
+                          src={gallery[0]}
+                          alt="Original White Look"
+                          className="h-full w-full object-contain p-0.5"
+                        />
+                      </div>
+                      <span className="block truncate px-1 pt-1 text-[8px] font-semibold text-charcoal-900">
+                        Original Look
+                      </span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Info */}
