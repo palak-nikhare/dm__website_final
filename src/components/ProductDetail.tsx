@@ -19,6 +19,7 @@ import { COLORS, PRODUCTS, imageForColor } from '@/data/products';
 import { useStore } from '@/store/StoreContext';
 import { Stars } from '@/components/Stars';
 import { ProductCard } from '@/components/ProductCard';
+import { ProductReviews } from '@/components/ProductReviews';
 
 const RECENTLY_VIEWED_KEY = 'nexus_recently_viewed';
 
@@ -406,30 +407,45 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
             </div>
           </section>
 
-          {/* Specifications & Reviews */}
-          <div className="grid gap-10 border-t border-charcoal-900/10 px-5 py-10 sm:px-8 lg:grid-cols-2">
-            <section>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-olive-500">Product specification</p>
-              <h3 className="mt-3 font-display text-2xl text-charcoal-900">Designed around the working day</h3>
-              <dl className="mt-6 grid grid-cols-3 gap-3 border-y border-charcoal-900/10 py-5 text-sm">
-                <div><dt className="text-charcoal-800/50">Height</dt><dd className="mt-1 font-medium">{product.dimensions.height} cm</dd></div>
-                <div><dt className="text-charcoal-800/50">Width</dt><dd className="mt-1 font-medium">{product.dimensions.width} cm</dd></div>
-                <div><dt className="text-charcoal-800/50">Depth</dt><dd className="mt-1 font-medium">{product.dimensions.depth} cm</dd></div>
+          {/* Specifications */}
+          <div className="border-t border-cream-300/60 px-6 py-10 sm:px-10">
+            <section className="max-w-4xl">
+              <span className="inline-block rounded-full bg-sage-100/70 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-sage-600 border border-sage-200/50">
+                Product Specification
+              </span>
+              <h3 className="mt-3 font-display text-2xl font-semibold text-espresso-900 sm:text-3xl">
+                Designed Around the Working Day
+              </h3>
+              <dl className="mt-6 grid grid-cols-3 gap-4 border-y border-cream-300/60 py-5 text-sm">
+                <div>
+                  <dt className="text-xs text-espresso-700/60 uppercase tracking-wider font-semibold">Height</dt>
+                  <dd className="mt-1.5 font-display text-base font-semibold text-espresso-900">{product.dimensions.height} cm</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-espresso-700/60 uppercase tracking-wider font-semibold">Width</dt>
+                  <dd className="mt-1.5 font-display text-base font-semibold text-espresso-900">{product.dimensions.width} cm</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-espresso-700/60 uppercase tracking-wider font-semibold">Depth</dt>
+                  <dd className="mt-1.5 font-display text-base font-semibold text-espresso-900">{product.dimensions.depth} cm</dd>
+                </div>
               </dl>
-              <p className="mt-5 text-sm leading-relaxed text-charcoal-800/70"><span className="font-medium text-charcoal-900">Material:</span> {product.material}</p>
-              <ul className="mt-5 space-y-3">
-                {product.features.map((feature) => <li key={feature} className="flex gap-3 text-sm text-charcoal-800/75"><Check className="mt-0.5 h-4 w-4 shrink-0 text-olive-500" />{feature}</li>)}
+              <p className="mt-5 text-sm leading-relaxed text-espresso-700/80">
+                <span className="font-semibold text-espresso-900">Material Construction:</span> {product.material}
+              </p>
+              <ul className="mt-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+                {product.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2.5 text-sm text-espresso-800/85">
+                    <Check className="h-4 w-4 shrink-0 text-sage-600" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
               </ul>
-              <p className="mt-6 border-t border-charcoal-900/10 pt-5 text-sm text-charcoal-800/65">Complimentary tracked delivery. Returns are accepted within 30 days in original condition.</p>
-            </section>
-            <section>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-olive-500">Sample reviews</p>
-              <h3 className="mt-3 font-display text-2xl text-charcoal-900">Notes from the NEXUS community</h3>
-              <div className="mt-6 space-y-4">
-                {product.demoReviews.map((review) => <article key={review.name} className="border border-charcoal-900/10 bg-cream-50 p-5"><Stars rating={5} /><h4 className="mt-3 font-medium text-charcoal-900">{review.title}</h4><p className="mt-2 text-sm leading-relaxed text-charcoal-800/65">“{review.text}”</p><p className="mt-3 text-xs font-medium uppercase tracking-wider text-charcoal-800/50">{review.name} · Demo review</p></article>)}
-              </div>
             </section>
           </div>
+
+          {/* Customer Reviews Section */}
+          <ProductReviews product={product} />
 
           {/* Recently Viewed Slider Section */}
           {recentlyViewed.length > 0 && (
