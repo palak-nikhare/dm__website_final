@@ -33,37 +33,37 @@ export function Checkout({ open, onClose }: CheckoutProps) {
 
   return (
     <div className="fixed inset-0 z-[90] overflow-y-auto" role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative flex min-h-full items-start justify-center">
-        <div className="my-0 w-full max-w-2xl bg-cream-100 sm:my-8 sm:rounded-3xl">
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-charcoal-900/8 bg-cream-100/95 px-5 py-4 backdrop-blur-md sm:rounded-t-3xl sm:px-8">
-            <h2 className="font-display text-xl font-medium text-charcoal-900">Checkout</h2>
-            <button onClick={onClose} className="rounded-full p-2 text-charcoal-800 hover:bg-charcoal-900/5">
+      <div className="absolute inset-0 bg-espresso-900/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative flex min-h-full items-start justify-center p-4 sm:p-8">
+        <div className="my-0 w-full max-w-2xl overflow-hidden rounded-[2.5rem] bg-oat-50 border border-cream-300/70 shadow-cozy-lg sm:my-8">
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-cream-300/60 bg-oat-50/95 px-6 py-5 backdrop-blur-md sm:px-10">
+            <h2 className="font-display text-2xl font-semibold text-espresso-900">Checkout</h2>
+            <button onClick={onClose} className="rounded-full p-2 text-espresso-800 hover:bg-espresso-900/5">
               <X className="h-5 w-5" />
             </button>
           </div>
 
           {placed ? (
             <div className="flex flex-col items-center px-8 py-20 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-olive-500/15">
-                <Check className="h-8 w-8 text-olive-500" />
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-sage-100 text-sage-600 shadow-sm">
+                <Check className="h-9 w-9" />
               </div>
-              <h3 className="mt-6 font-display text-2xl font-medium text-charcoal-900">Order Placed!</h3>
-              <p className="mt-2 text-sm text-charcoal-800/60">
-                This is a demo checkout for a college presentation. No payment was processed and no order was shipped.
+              <h3 className="mt-6 font-display text-3xl font-semibold text-espresso-900">Order Placed!</h3>
+              <p className="mt-3 text-sm text-espresso-700/70 max-w-md leading-relaxed">
+                This is a demo checkout showcase. No payment was processed and no order was shipped.
               </p>
               <button
                 onClick={onClose}
-                className="mt-8 rounded-full bg-charcoal-900 px-6 py-3 text-sm font-medium text-cream-100 hover:bg-charcoal-800"
+                className="mt-8 rounded-full bg-espresso-900 px-8 py-3.5 text-sm font-semibold text-cream-50 hover:bg-espresso-800 shadow-cozy"
               >
-                Continue Shopping
+                Continue Exploring
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="px-5 py-6 sm:px-8">
-              <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10">
+              <div className="space-y-7">
                 <div>
-                  <h3 className="mb-4 font-display text-lg font-medium text-charcoal-900">Contact Details</h3>
+                  <h3 className="mb-4 font-display text-xl font-medium text-espresso-900">Contact Details</h3>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field label="Full Name" name="name" type="text" placeholder="Your name" required />
                     <Field label="Email" name="email" type="email" placeholder="you@example.com" required />
@@ -72,7 +72,7 @@ export function Checkout({ open, onClose }: CheckoutProps) {
                 </div>
 
                 <div>
-                  <h3 className="mb-4 font-display text-lg font-medium text-charcoal-900">Shipping Address</h3>
+                  <h3 className="mb-4 font-display text-xl font-medium text-espresso-900">Shipping Address</h3>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                       <Field label="Address" name="address" type="text" placeholder="Street address" required />
@@ -83,29 +83,29 @@ export function Checkout({ open, onClose }: CheckoutProps) {
                 </div>
 
                 <div>
-                  <h3 className="mb-4 font-display text-lg font-medium text-charcoal-900">Payment Method</h3>
+                  <h3 className="mb-4 font-display text-xl font-medium text-espresso-900">Payment Method</h3>
                   <div className="grid grid-cols-3 gap-3">
                     <PaymentOption value="card" current={payment} onChange={setPayment} icon={CreditCard} label="Card" />
                     <PaymentOption value="upi" current={payment} onChange={setPayment} icon={Banknote} label="UPI" />
                     <PaymentOption value="cod" current={payment} onChange={setPayment} icon={Truck} label="Cash on Delivery" />
                   </div>
-                  <p className="mt-3 rounded-xl bg-cream-200/60 px-4 py-3 text-xs text-charcoal-800/50">
+                  <p className="mt-3.5 rounded-2xl bg-cream-200/60 px-4 py-3 text-xs text-espresso-700/60">
                     Demo checkout — no real payment will be processed. This is for academic presentation purposes only.
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-cream-50 p-5">
-                  <div className="flex items-center justify-between text-sm text-charcoal-800/60">
+                <div className="rounded-3xl border border-cream-300/60 bg-cream-100/60 p-6 shadow-sm">
+                  <div className="flex items-center justify-between text-sm text-espresso-700/70">
                     <span>Subtotal</span>
-                    <span>₹{cartSubtotal.toLocaleString('en-IN')}</span>
+                    <span className="font-semibold text-espresso-900">₹{cartSubtotal.toLocaleString('en-IN')}</span>
                   </div>
-                  <div className="mt-2 flex items-center justify-between text-sm text-charcoal-800/60">
+                  <div className="mt-2 flex items-center justify-between text-sm text-espresso-700/70">
                     <span>Shipping</span>
-                    <span className="text-olive-500">Free</span>
+                    <span className="font-semibold text-sage-600">Free</span>
                   </div>
-                  <div className="mt-3 flex items-center justify-between border-t border-charcoal-900/8 pt-3">
-                    <span className="font-display text-lg font-medium text-charcoal-900">Total</span>
-                    <span className="font-display text-xl font-semibold text-charcoal-900">
+                  <div className="mt-3.5 flex items-center justify-between border-t border-cream-300/60 pt-3.5">
+                    <span className="font-display text-lg font-medium text-espresso-900">Total</span>
+                    <span className="font-display text-2xl font-semibold text-espresso-900">
                       ₹{total.toLocaleString('en-IN')}
                     </span>
                   </div>
@@ -113,7 +113,7 @@ export function Checkout({ open, onClose }: CheckoutProps) {
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-charcoal-900 py-4 text-sm font-medium text-cream-100 transition-all hover:bg-charcoal-800 hover:shadow-lg"
+                  className="w-full rounded-full bg-espresso-900 py-4 text-sm font-semibold text-cream-50 transition-all duration-400 hover:bg-espresso-800 hover:shadow-cozy-hover hover:-translate-y-0.5"
                 >
                   Place Order — ₹{total.toLocaleString('en-IN')}
                 </button>
@@ -141,7 +141,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="mb-1.5 block text-xs font-medium text-charcoal-800/70">
+      <label htmlFor={name} className="mb-1.5 block text-xs font-semibold uppercase tracking-widest text-espresso-700/70">
         {label}
       </label>
       <input
@@ -150,7 +150,7 @@ function Field({
         type={type}
         placeholder={placeholder}
         required={required}
-        className="w-full rounded-xl border border-charcoal-900/12 bg-cream-50 px-4 py-3 text-sm text-charcoal-900 placeholder:text-charcoal-800/30 focus:border-olive-500/40 focus:outline-none"
+        className="w-full rounded-2xl border border-cream-300 bg-cream-100/50 px-4 py-3 text-sm text-espresso-900 placeholder:text-espresso-700/35 focus:border-espresso-900 focus:outline-none shadow-sm"
       />
     </div>
   );
@@ -173,12 +173,14 @@ function PaymentOption({
     <button
       type="button"
       onClick={() => onChange(value)}
-      className={`flex flex-col items-center gap-2 rounded-xl border-2 px-3 py-4 transition-all ${
-        current === value ? 'border-charcoal-900 bg-cream-50' : 'border-charcoal-900/10 hover:border-charcoal-900/20'
+      className={`flex flex-col items-center gap-2.5 rounded-2xl border-2 px-3 py-4 transition-all duration-300 ${
+        current === value
+          ? 'border-espresso-900 bg-cream-100/80 shadow-cozy'
+          : 'border-cream-300 bg-oat-50/50 hover:border-cream-400'
       }`}
     >
-      <Icon className={`h-5 w-5 ${current === value ? 'text-charcoal-900' : 'text-charcoal-800/50'}`} />
-      <span className="text-xs font-medium text-charcoal-900">{label}</span>
+      <Icon className={`h-5 w-5 ${current === value ? 'text-terracotta-500' : 'text-espresso-700/50'}`} />
+      <span className="text-xs font-semibold text-espresso-900">{label}</span>
     </button>
   );
 }

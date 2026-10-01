@@ -6,21 +6,21 @@ export function PopularThisWeek({ onView }: { onView: (product: Product) => void
   const popular = PRODUCTS.filter((p) => p.popular);
 
   return (
-    <section className="bg-cream-100 py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex items-end justify-between">
+    <section className="bg-cream-100/70 py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
+        <div className="flex items-end justify-between border-b border-cream-300/60 pb-6">
           <div>
-            <p className="text-sm font-medium uppercase tracking-wider text-olive-500">Trending</p>
-            <h2 className="mt-2 font-display text-3xl font-medium tracking-tightish text-charcoal-900 sm:text-4xl">
+            <p className="text-xs font-semibold uppercase tracking-widest text-sage-600">Trending Now</p>
+            <h2 className="mt-2 font-display text-3xl font-semibold tracking-tightish text-espresso-900 sm:text-4xl">
               Popular This Week
             </h2>
           </div>
-          <span className="hidden text-sm text-charcoal-800/50 sm:block">Most wishlisted right now</span>
+          <span className="hidden text-sm text-espresso-700/60 font-medium sm:block">Most wishlisted by our community</span>
         </div>
 
-        <div className="mt-10 flex gap-6 overflow-x-auto pb-4 no-scrollbar lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible">
+        <div className="mt-12 flex gap-8 overflow-x-auto pb-4 no-scrollbar lg:grid lg:grid-cols-4 lg:gap-8 lg:overflow-visible">
           {popular.map((product) => (
-            <div key={product.id} className="w-72 shrink-0 lg:w-auto">
+            <div key={product.id} className="w-76 shrink-0 lg:w-auto">
               <ProductCard product={product} onView={onView} />
             </div>
           ))}

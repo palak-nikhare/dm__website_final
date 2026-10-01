@@ -22,25 +22,25 @@ const FEATURES = [
 
 export function FeaturesGrid() {
   return (
-    <section id="features" className="scroll-mt-20 bg-cream-100 py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="features" className="scroll-mt-20 bg-cream-100/70 py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
         <div className="text-center">
-          <p className="text-sm font-medium uppercase tracking-wider text-olive-500">Why NEXUS</p>
-          <h2 className="mt-3 font-display text-4xl font-medium tracking-tightish text-charcoal-900 sm:text-5xl">
+          <p className="text-xs font-semibold uppercase tracking-widest text-sage-600">Why NEXUS</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-tightish text-espresso-900 sm:text-5xl">
             Eight reasons to carry smarter.
           </h2>
         </div>
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="group rounded-2xl border border-charcoal-900/8 bg-cream-50 p-6 transition-all hover:border-olive-500/30 hover:shadow-lg"
+              className="group rounded-3xl border border-cream-300/60 bg-oat-50/90 p-7 shadow-cozy transition-all duration-500 hover:-translate-y-1.5 hover:shadow-cozy-hover hover:border-cream-300"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-olive-500/10 text-olive-500 transition-transform group-hover:scale-110">
-                <f.icon className="h-5 w-5" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sage-100 text-sage-600 transition-transform duration-400 group-hover:scale-110 shadow-sm">
+                <f.icon className="h-5.5 w-5.5" />
               </div>
-              <h3 className="mt-5 font-display text-base font-medium text-charcoal-900">{f.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-charcoal-800/60">{f.desc}</p>
+              <h3 className="mt-6 font-display text-lg font-medium text-espresso-900">{f.title}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-espresso-700/70">{f.desc}</p>
             </div>
           ))}
         </div>

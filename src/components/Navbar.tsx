@@ -46,10 +46,10 @@ export function Navbar({
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-cream-100/90 backdrop-blur-md shadow-[0_1px_0_0_rgba(43,40,38,0.08)]' : 'bg-transparent'
+          scrolled ? 'bg-cream-100/90 backdrop-blur-md border-b border-cream-300/60 shadow-cozy' : 'bg-transparent'
         }`}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4.5 sm:px-10">
           <a
             href="/"
             onClick={(e) => {
@@ -57,12 +57,12 @@ export function Navbar({
               onNavigate?.('/');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="font-display text-2xl font-semibold tracking-tightish text-charcoal-900"
+            className="font-display text-2xl font-semibold tracking-tightish text-espresso-900"
           >
             NEXUS
           </a>
 
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden items-center gap-9 lg:flex">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
@@ -71,47 +71,47 @@ export function Navbar({
                   e.preventDefault();
                   handleNavClick(link);
                 }}
-                className="text-sm font-medium text-charcoal-800/80 transition-colors hover:text-charcoal-900"
+                className="text-sm font-medium text-espresso-700/80 transition-all duration-300 hover:text-terracotta-500 hover:scale-105"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-4">
             <button
               onClick={onWishlistClick}
-              className="relative rounded-full p-2 text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+              className="relative rounded-full p-2.5 text-espresso-800 transition-colors hover:bg-espresso-900/5 hover:text-terracotta-500"
               aria-label="Wishlist"
             >
               <Heart className="h-5 w-5" />
               {wishlist.length > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-burgundy px-1 text-[10px] font-semibold text-cream-100">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta-500 px-1 text-[10px] font-semibold text-cream-50 shadow-sm">
                   {wishlist.length}
                 </span>
               )}
             </button>
             <button
               onClick={onCartClick}
-              className="relative rounded-full p-2 text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+              className="relative rounded-full p-2.5 text-espresso-800 transition-colors hover:bg-espresso-900/5 hover:text-terracotta-500"
               aria-label="Cart"
             >
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-charcoal-900 px-1 text-[10px] font-semibold text-cream-100">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-espresso-900 px-1 text-[10px] font-semibold text-cream-50 shadow-sm">
                   {cartCount}
                 </span>
               )}
             </button>
             <button
               onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
-              className="hidden rounded-full bg-charcoal-900 px-5 py-2.5 text-sm font-medium text-cream-100 transition-all hover:bg-charcoal-800 hover:shadow-lg sm:inline-block"
+              className="hidden rounded-full bg-espresso-900 px-6 py-2.5 text-sm font-semibold text-cream-50 shadow-cozy transition-all duration-400 hover:bg-espresso-800 hover:shadow-cozy-hover hover:-translate-y-0.5 sm:inline-block"
             >
-              Shop Now
+              Shop Collection
             </button>
             <button
               onClick={() => setMenuOpen(true)}
-              className="rounded-full p-2 text-charcoal-800 transition-colors hover:bg-charcoal-900/5 lg:hidden"
+              className="rounded-full p-2 text-espresso-800 transition-colors hover:bg-espresso-900/5 lg:hidden"
               aria-label="Menu"
             >
               <Menu className="h-5 w-5" />
@@ -126,23 +126,23 @@ export function Navbar({
         aria-hidden={!menuOpen}
       >
         <div
-          className={`absolute inset-0 bg-charcoal-900/40 transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-espresso-900/40 backdrop-blur-xs transition-opacity duration-300 ${
             menuOpen ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={() => setMenuOpen(false)}
         />
         <div
-          className={`absolute right-0 top-0 h-full w-72 bg-cream-100 shadow-2xl transition-transform duration-300 ${
+          className={`absolute right-0 top-0 h-full w-80 bg-oat-50 p-6 shadow-cozy-lg transition-transform duration-400 ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex items-center justify-between border-b border-charcoal-900/10 px-5 py-4">
-            <span className="font-display text-xl font-semibold text-charcoal-900">NEXUS</span>
-            <button onClick={() => setMenuOpen(false)} className="rounded-full p-2 text-charcoal-800 hover:bg-charcoal-900/5">
+          <div className="flex items-center justify-between border-b border-cream-300/60 pb-4">
+            <span className="font-display text-xl font-semibold text-espresso-900">NEXUS</span>
+            <button onClick={() => setMenuOpen(false)} className="rounded-full p-2 text-espresso-800 hover:bg-espresso-900/5">
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="flex flex-col gap-1 px-5 py-4">
+          <div className="flex flex-col gap-2 pt-6">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}
@@ -151,16 +151,16 @@ export function Navbar({
                   e.preventDefault();
                   handleNavClick(link);
                 }}
-                className="rounded-lg px-3 py-3 text-base font-medium text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+                className="rounded-2xl px-4 py-3 text-base font-medium text-espresso-800 transition-colors hover:bg-cream-200/60"
               >
                 {link.label}
               </a>
             ))}
             <button
               onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
-              className="mt-4 rounded-full bg-charcoal-900 px-5 py-3 text-center text-sm font-medium text-cream-100"
+              className="mt-6 rounded-full bg-espresso-900 px-6 py-3.5 text-center text-sm font-semibold text-cream-50 shadow-cozy"
             >
-              Shop Now
+              Shop Collection
             </button>
           </div>
         </div>

@@ -15,29 +15,29 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
   };
 
   return (
-    <footer className="bg-charcoal-900 text-cream-100">
+    <footer className="bg-espresso-900 text-cream-50">
       {/* Newsletter */}
-      <div className="border-b border-cream-100/10 px-5 py-16 sm:px-8">
+      <div className="border-b border-cream-100/10 px-6 py-20 sm:px-10">
         <div className="mx-auto max-w-3xl text-center">
-          <h3 className="font-display text-3xl font-medium tracking-tightish sm:text-4xl">
-            Get early access to new colors and exclusive offers.
+          <h3 className="font-display text-3xl font-semibold tracking-tightish sm:text-4xl">
+            Get early access to new colors and cozy drops.
           </h3>
-          <form onSubmit={handleSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+          <form onSubmit={handleSubmit} className="mx-auto mt-9 flex max-w-md flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
-              <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-cream-100/40" />
+              <Mail className="absolute left-4.5 top-1/2 h-5 w-5 -translate-y-1/2 text-cream-100/40" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="w-full rounded-full border border-cream-100/15 bg-charcoal-800 py-3.5 pl-12 pr-4 text-sm text-cream-100 placeholder:text-cream-100/40 focus:border-olive-300/50 focus:outline-none"
+                className="w-full rounded-full border border-cream-100/15 bg-espresso-800 py-3.5 pl-12 pr-4 text-sm text-cream-50 placeholder:text-cream-100/40 focus:border-terracotta-400 focus:outline-none shadow-cozy"
               />
             </div>
             <button
               type="submit"
-              className={`rounded-full px-6 py-3.5 text-sm font-medium transition-all ${
-                subscribed ? 'bg-olive-500 text-cream-100' : 'bg-cream-100 text-charcoal-900 hover:bg-cream-50'
+              className={`rounded-full px-7 py-3.5 text-sm font-semibold transition-all duration-400 ${
+                subscribed ? 'bg-sage-500 text-cream-50' : 'bg-cream-50 text-espresso-900 hover:bg-oat-50 hover:shadow-cozy-hover'
               }`}
             >
               {subscribed ? (
@@ -47,12 +47,12 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
               )}
             </button>
           </form>
-          <p className="mt-3 text-xs text-cream-100/40">No spam. Just new drops and launch offers.</p>
+          <p className="mt-3.5 text-xs text-cream-100/40">No spam. Just gentle launch updates and quiet news.</p>
         </div>
       </div>
 
       {/* Links */}
-      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <a
@@ -65,10 +65,10 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
             >
               NEXUS
             </a>
-            <p className="mt-3 text-sm leading-relaxed text-cream-100/60">
+            <p className="mt-3 text-sm leading-relaxed text-cream-100/65">
               Smart backpacks designed for the way you study, work, commute and create.
             </p>
-            <p className="mt-3 text-sm text-olive-300">Carry Smarter. Go Further.</p>
+            <p className="mt-3 text-sm font-medium text-terracotta-400">Carry Smarter. Everyday.</p>
           </div>
 
           <FooterCol
@@ -103,7 +103,7 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
           />
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-cream-100/10 pt-8 sm:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-6 border-t border-cream-100/10 pt-8 sm:flex-row">
           <div className="flex items-center gap-4">
             <SocialIcon icon={Instagram} label="Instagram" />
             <SocialIcon icon={Twitter} label="Twitter" />
@@ -129,7 +129,7 @@ function FooterCol({
 }) {
   return (
     <div>
-      <p className="text-sm font-semibold text-cream-100">{title}</p>
+      <p className="text-sm font-semibold text-cream-50">{title}</p>
       <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.label}>
@@ -149,8 +149,8 @@ function FooterCol({
               }}
               className={`text-sm transition-colors ${
                 link.isWarranty
-                  ? 'font-medium text-olive-300 hover:text-cream-100'
-                  : 'text-cream-100/55 hover:text-cream-100'
+                  ? 'font-semibold text-terracotta-400 hover:text-cream-50'
+                  : 'text-cream-100/60 hover:text-cream-50'
               }`}
             >
               {link.label}
@@ -168,9 +168,9 @@ function SocialIcon({ icon: Icon, label }: { icon: typeof Mail; label: string })
       href="#"
       onClick={(e) => e.preventDefault()}
       aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-all hover:border-olive-300/40 hover:text-olive-300"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-all hover:border-terracotta-400 hover:text-terracotta-400 shadow-sm"
     >
-      <Icon className="h-5 w-5" />
+      <Icon className="h-4.5 w-4.5" />
     </a>
   );
 }

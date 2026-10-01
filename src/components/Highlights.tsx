@@ -20,22 +20,22 @@ const HIGHLIGHTS = [
 
 export function Highlights() {
   return (
-    <section className="bg-cream-100 py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <p className="text-center font-display text-3xl font-medium tracking-tightish text-charcoal-900 sm:text-4xl">
+    <section className="bg-cream-100/60 py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 sm:px-10">
+        <p className="text-center font-display text-3xl font-semibold tracking-tightish text-espresso-900 sm:text-4xl">
           Designed for your everyday.
         </p>
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
           {HIGHLIGHTS.map((item) => (
             <div
               key={item.title}
-              className="group rounded-2xl border border-charcoal-900/8 bg-cream-50 p-8 transition-all hover:border-charcoal-900/15 hover:shadow-lg"
+              className="group rounded-3xl border border-cream-300/60 bg-oat-50/90 p-9 shadow-cozy transition-all duration-500 hover:-translate-y-2 hover:shadow-cozy-hover hover:border-cream-300"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-olive-500/10 text-olive-500 transition-transform group-hover:scale-110">
-                <item.icon className="h-6 w-6" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sage-100 text-sage-600 transition-transform duration-400 group-hover:scale-110 shadow-sm">
+                <item.icon className="h-6.5 w-6.5" />
               </div>
-              <h3 className="mt-6 font-display text-xl font-medium text-charcoal-900">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-charcoal-800/65">{item.desc}</p>
+              <h3 className="mt-7 font-display text-2xl font-medium text-espresso-900">{item.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-espresso-700/70">{item.desc}</p>
             </div>
           ))}
         </div>

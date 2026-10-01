@@ -141,48 +141,48 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
 
   return (
     <div className="fixed inset-0 z-[70] overflow-y-auto" ref={scrollContainerRef} role="dialog" aria-modal="true">
-      <div className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative min-h-full pb-16">
-        <div className="mx-auto my-0 max-w-6xl bg-cream-100 sm:my-8 shadow-2xl">
+      <div className="absolute inset-0 bg-espresso-900/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative min-h-full py-6 sm:py-12 px-4">
+        <div className="mx-auto my-0 max-w-6xl overflow-hidden rounded-[2.5rem] bg-oat-50 border border-cream-300/70 shadow-cozy-lg">
           {/* Header */}
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-charcoal-900/8 bg-cream-100/95 px-5 py-4 backdrop-blur-md sm:px-8">
-            <span className="font-display text-lg font-medium text-charcoal-900">{product.name}</span>
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-cream-300/60 bg-oat-50/95 px-6 py-4.5 backdrop-blur-md sm:px-10">
+            <span className="font-display text-xl font-medium text-espresso-900">{product.name}</span>
             <button
               onClick={onClose}
-              className="rounded-full p-2 text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+              className="rounded-full p-2.5 text-espresso-800 transition-colors hover:bg-espresso-900/5"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
-          <div className="grid gap-8 p-5 sm:p-8 lg:grid-cols-2 lg:gap-12">
+          <div className="grid gap-10 p-6 sm:p-10 lg:grid-cols-2 lg:gap-14">
             {/* Gallery */}
             <div className="lg:sticky lg:top-24 lg:self-start">
               <div className="relative">
                 <button
                   onClick={() => setZoomed(true)}
-                  className={`group/image relative block w-full overflow-hidden transition-colors duration-300 ${
-                    bgMode === 'cream' ? 'bg-[#f5f0e8]' : 'bg-white'
+                  className={`group/image relative block w-full overflow-hidden rounded-3xl border border-cream-300/60 shadow-cozy transition-colors duration-500 ${
+                    bgMode === 'cream' ? 'bg-oat-100/90' : 'bg-oat-50'
                   }`}
                   aria-label={`Enlarge ${product.name} image`}
                 >
                   <img
                     src={gallery[activeImage]}
                     alt={`${product.name} product view ${activeImage + 1}`}
-                    className="aspect-square w-full object-contain p-3 nova-scale-in"
+                    className="aspect-square w-full object-contain p-4 nova-scale-in"
                     key={`${color}-${activeImage}-${bgMode}`}
                     sizes="(min-width: 1024px) 560px, 100vw"
                   />
-                  <span className="absolute bottom-4 right-4 flex items-center gap-2 bg-cream-100/90 px-3 py-2 text-xs font-medium text-charcoal-900 opacity-100 backdrop-blur sm:opacity-0 sm:transition-opacity sm:group-hover/image:opacity-100">
-                    <Maximize2 className="h-3.5 w-3.5" /> Enlarge
+                  <span className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-oat-50/90 px-3.5 py-2 text-xs font-semibold text-espresso-900 shadow-cozy opacity-100 backdrop-blur-md sm:opacity-0 sm:transition-opacity sm:group-hover/image:opacity-100">
+                    <Maximize2 className="h-3.5 w-3.5 text-terracotta-500" /> Enlarge
                   </span>
                 </button>
 
                 {/* Original Look Comparison Toggle Inset for New Bags */}
                 {isNew && (
-                  <div className="absolute top-4 left-4 z-20 flex items-center gap-1 rounded-full border border-charcoal-900/15 bg-cream-100/90 p-1 shadow-md backdrop-blur">
-                    <span className="pl-2 text-[10px] font-semibold uppercase tracking-wider text-charcoal-800/60">
+                  <div className="absolute top-4 left-4 z-20 flex items-center gap-1 rounded-full border border-cream-300/80 bg-oat-50/95 p-1 shadow-cozy backdrop-blur-md">
+                    <span className="pl-2.5 text-[10px] font-semibold uppercase tracking-wider text-espresso-700/60">
                       Look:
                     </span>
                     <button
@@ -191,10 +191,10 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
                         e.stopPropagation();
                         setBgMode('cream');
                       }}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                      className={`rounded-full px-3 py-1 text-[10px] font-semibold transition-all ${
                         bgMode === 'cream'
-                          ? 'bg-charcoal-900 text-cream-100 shadow-sm'
-                          : 'text-charcoal-800/70 hover:text-charcoal-900'
+                          ? 'bg-espresso-900 text-cream-50 shadow-sm'
+                          : 'text-espresso-800/70 hover:text-espresso-900'
                       }`}
                     >
                       Soft Cream
@@ -205,10 +205,10 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
                         e.stopPropagation();
                         setBgMode('white');
                       }}
-                      className={`flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                      className={`flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold transition-all ${
                         bgMode === 'white'
-                          ? 'bg-charcoal-900 text-cream-100 shadow-sm'
-                          : 'text-charcoal-800/70 hover:text-charcoal-900'
+                          ? 'bg-espresso-900 text-cream-50 shadow-sm'
+                          : 'text-espresso-800/70 hover:text-espresso-900'
                       }`}
                     >
                       <span>Original Look (White)</span>
