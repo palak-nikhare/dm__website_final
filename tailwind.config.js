@@ -38,6 +38,11 @@ export default {
           800: '#36291F',
           900: '#241B14',
         },
+        burgundy: {
+          DEFAULT: '#6B3037',
+          500: '#6B3037',
+          600: '#58262C',
+        },
       },
       fontFamily: {
         display: ['"Fraunces"', 'Georgia', 'serif'],
