@@ -34,7 +34,7 @@ export function Hero({ onShopClick, onTechClick }: { onShopClick: () => void; on
             </button>
           </div>
           <div className="mt-12 flex items-center gap-8">
-            <Stat value="12" label="Designs" />
+            <Stat value="16" label="Designs" />
             <div className="h-10 w-px bg-charcoal-900/10" />
             <Stat value="11" label="Colors" />
             <div className="h-10 w-px bg-charcoal-900/10" />

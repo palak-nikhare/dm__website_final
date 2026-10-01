@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StoreProvider } from '@/store/StoreContext';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
@@ -18,6 +18,7 @@ import { ProductDetail } from '@/components/ProductDetail';
 import { CartDrawer } from '@/components/CartDrawer';
 import { Checkout } from '@/components/Checkout';
 import { WishlistDrawer } from '@/components/WishlistDrawer';
+import { Warranty } from '@/components/Warranty';
 import type { Product } from '@/data/products';
 
 function App() {
@@ -25,8 +26,30 @@ function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  const scrollTo = (href: string) => document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const onPopState = () => setCurrentPath(window.location.pathname);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const navigate = (newPath: string) => {
+    window.history.pushState({}, '', newPath);
+    setCurrentPath(newPath);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollTo = (href: string) => {
+    if (currentPath !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleView = (product: Product) => setSelectedProduct(product);
 
@@ -35,29 +58,41 @@ function App() {
     setCheckoutOpen(true);
   };
 
+  const isWarrantyPage = currentPath === '/warranty';
+
   return (
     <StoreProvider>
-      <Navbar onCartClick={() => setCartOpen(true)} onWishlistClick={() => setWishlistOpen(true)} />
+      <Navbar
+        onCartClick={() => setCartOpen(true)}
+        onWishlistClick={() => setWishlistOpen(true)}
+        onNavigate={navigate}
+      />
 
       <main>
-        <Hero
-          onShopClick={() => scrollTo('#shop')}
-          onTechClick={() => scrollTo('#technology')}
-        />
-        <Highlights />
-        <ShopSection onView={handleView} />
-        <PopularThisWeek onView={handleView} />
-        <Technology />
-        <Organization />
-        <WhatFitsInside />
-        <FeaturesGrid />
-        <Lifestyle />
-        <ColorCollection onView={handleView} />
-        <Reviews />
-        <PromoBanner onShopClick={() => scrollTo('#shop')} />
+        {isWarrantyPage ? (
+          <Warranty onNavigateHome={() => navigate('/')} />
+        ) : (
+          <>
+            <Hero
+              onShopClick={() => scrollTo('#shop')}
+              onTechClick={() => scrollTo('#technology')}
+            />
+            <Highlights />
+            <ShopSection onView={handleView} />
+            <PopularThisWeek onView={handleView} />
+            <Technology />
+            <Organization />
+            <WhatFitsInside />
+            <FeaturesGrid />
+            <Lifestyle />
+            <ColorCollection onView={handleView} />
+            <Reviews />
+            <PromoBanner onShopClick={() => scrollTo('#shop')} />
+          </>
+        )}
       </main>
 
-      <Footer />
+      <Footer onNavigate={navigate} />
 
       {selectedProduct && (
         <ProductDetail

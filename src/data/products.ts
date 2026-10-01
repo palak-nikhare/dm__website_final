@@ -318,6 +318,105 @@ export const PRODUCTS:Product[] = [
     demoReviews: [
       R('Karthik Menon', 'Indestructible feel', 'Robust zippers, tough fabric, and tons of space.')
     ]
+  },
+  {
+    id: 'axis-pro',
+    name: 'NEXUS Axis Pro',
+    tagline: 'Sculpted security for modern business travel',
+    description: 'A seamless hard-shell profile with discreet access and a side-mounted TSA lock.',
+    longDescription: 'NEXUS Axis Pro pairs an architectural silhouette with a resilient water-repellent shell. Its protected laptop compartment, concealed openings and balanced harness make it a composed choice for office commutes and short business trips.',
+    price: 6499,
+    originalPrice: 7799,
+    rating: 4.9,
+    reviews: 48,
+    badge: 'Signature',
+    category: 'business',
+    popular: true,
+    colors: ['black', 'graphite', 'navy', 'stone'],
+    defaultColor: 'black',
+    images: ['/images/products/nexus-axis.png'],
+    dimensions: { height: 46, width: 31, depth: 16 },
+    material: 'Water-repellent coated polyester with soft-touch trim',
+    features: ['TSA-approved combination lock', 'Hidden anti-theft zippers', 'Shock-proof laptop compartment', 'Breathable back padding', 'Weight-distributing shoulder straps'],
+    demoReviews: [
+      R('Aarav Mehta', 'Sharp enough for client meetings', 'The structured shell keeps its shape and the lock is reassuring during train travel.'),
+      R('Rhea Kapoor', 'Quiet, considered design', 'It looks refined with workwear and holds my laptop without becoming bulky.')
+    ]
+  },
+  {
+    id: 'transit-pro',
+    name: 'NEXUS Transit Pro',
+    tagline: 'High-capacity organization, tailored for the commute',
+    description: 'A softly structured tech pack with generous capacity and external USB charging access.',
+    longDescription: 'NEXUS Transit Pro is designed around a full working day. A wide-opening compartment keeps tech and documents orderly, while dedicated power-bank storage and an external USB charging port keep essential devices within reach.',
+    price: 5799,
+    originalPrice: 6999,
+    rating: 4.8,
+    reviews: 67,
+    badge: 'Bestseller',
+    category: 'commuter',
+    popular: true,
+    colors: ['black', 'graphite', 'navy', 'olive'],
+    defaultColor: 'black',
+    images: ['/images/products/nexus-transit-black.png', '/images/products/nexus-transit-graphite.png'],
+    colorImages: {
+      black: '/images/products/nexus-transit-black.png',
+      graphite: '/images/products/nexus-transit-graphite.png'
+    },
+    dimensions: { height: 47, width: 32, depth: 18 },
+    material: 'High-density water-repellent Oxford weave',
+    features: ['Built-in USB charging port', 'Dedicated power-bank pocket', 'Cable organizer', 'Shock-proof laptop compartment', 'Breathable back padding'],
+    demoReviews: [
+      R('Kunal Shah', 'My desk now travels neatly', 'Chargers, notebook and laptop finally have sensible places. The graphite finish is excellent.'),
+      R('Maya Iyer', 'Comfortable on long commutes', 'Even fully packed, the shoulder straps distribute the load noticeably well.')
+    ]
+  },
+  {
+    id: 'studio-artisan',
+    name: 'NEXUS Studio Artisan',
+    tagline: 'Textured minimalism for creative workdays',
+    description: 'A slim woven profile detailed with warm trim and a clean full-length opening.',
+    longDescription: 'NEXUS Studio Artisan brings tactile warmth to technical carry. Its understated woven shell, padded computer sleeve and considered interior organization suit designers, students and hybrid workers who prefer a softer professional look.',
+    price: 4999,
+    originalPrice: 5799,
+    rating: 4.6,
+    reviews: 31,
+    category: 'creator',
+    popular: false,
+    colors: ['charcoal', 'navy', 'taupe', 'sand'],
+    defaultColor: 'charcoal',
+    images: ['/images/products/nexus-studio.png'],
+    dimensions: { height: 44, width: 30, depth: 14 },
+    material: 'Water-repellent woven polyester with vegan leather accents',
+    features: ['Shock-proof laptop compartment', 'Hidden quick-access pocket', 'Cable organizer', 'Breathable back padding'],
+    demoReviews: [
+      R('Naina Bose', 'The texture makes it', 'It feels more like a considered design object than a typical laptop backpack.'),
+      R('Kabir Sethi', 'Slim but genuinely useful', 'Carries my 15-inch laptop, sketchbook and cables without losing the clean profile.')
+    ]
+  },
+  {
+    id: 'form-edition',
+    name: 'NEXUS Form Edition',
+    tagline: 'Editorial utility with a tailored edge',
+    description: 'A distinctive flap-top design with precise pockets and polished hardware.',
+    longDescription: 'NEXUS Form Edition is an expressive professional carry with a composed monochrome finish. The flap-covered main opening and dedicated external pockets keep daily essentials organized while maintaining a sharp, vertical silhouette.',
+    price: 5499,
+    originalPrice: 6299,
+    rating: 4.8,
+    reviews: 26,
+    badge: 'New',
+    category: 'creator',
+    popular: true,
+    colors: ['black', 'burgundy', 'brown', 'cream'],
+    defaultColor: 'black',
+    images: ['/images/products/nexus-form.png'],
+    dimensions: { height: 45, width: 31, depth: 15 },
+    material: 'Fine-grain water-repellent synthetic leather and technical fabric',
+    features: ['Hidden anti-theft zippers', 'Shock-proof laptop compartment', 'Hidden quick-access pocket', 'Breathable back padding'],
+    demoReviews: [
+      R('Ishita Verma', 'Distinct without being loud', 'The flap and silver hardware feel fashion-led, but it remains completely office appropriate.'),
+      R('Arjun Nair', 'Easy to organize', 'The separate exterior pockets make keys, cards and earbuds quick to reach.')
+    ]
   }
 ];
 

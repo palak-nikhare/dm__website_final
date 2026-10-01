@@ -1,10 +1,45 @@
-import { useState, useEffect } from 'react';
-import { X, Heart, ShoppingBag, Zap, Truck, ShieldCheck, RotateCcw, Minus, Plus, Check, Maximize2 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import {
+  X,
+  Heart,
+  ShoppingBag,
+  Zap,
+  Truck,
+  ShieldCheck,
+  RotateCcw,
+  Minus,
+  Plus,
+  Check,
+  Maximize2,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
 import type { Product, ColorKey } from '@/data/products';
 import { COLORS, PRODUCTS, imageForColor } from '@/data/products';
 import { useStore } from '@/store/StoreContext';
 import { Stars } from '@/components/Stars';
 import { ProductCard } from '@/components/ProductCard';
+
+const RECENTLY_VIEWED_KEY = 'nexus_recently_viewed';
+
+function getRecentlyViewedIds(): string[] {
+  try {
+    const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function recordRecentlyViewed(productId: string) {
+  try {
+    const current = getRecentlyViewedIds().filter((id) => id !== productId);
+    const updated = [productId, ...current].slice(0, 6);
+    localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(updated));
+  } catch {
+    // Ignore storage errors
+  }
+}
 
 interface ProductDetailProps {
   product: Product;
@@ -20,6 +55,12 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
   const [activeImage, setActiveImage] = useState(0);
   const [added, setAdded] = useState(false);
   const [zoomed, setZoomed] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const primaryAddToCartRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -32,16 +73,48 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
     setQuantity(1);
     setAdded(false);
     setZoomed(false);
+    setShowStickyBar(false);
+
+    // Track recently viewed in localStorage
+    recordRecentlyViewed(product.id);
+    const recentIds = getRecentlyViewedIds().filter((id) => id !== product.id);
+    const recentProducts = recentIds
+      .map((id) => PRODUCTS.find((p) => p.id === id))
+      .filter((p): p is Product => p !== undefined);
+    setRecentlyViewed(recentProducts);
+  }, [product]);
+
+  // Scroll observer for sticky bar
+  useEffect(() => {
+    const btnEl = primaryAddToCartRef.current;
+    const containerEl = scrollContainerRef.current;
+    if (!btnEl || !containerEl) return;
+
+    const handleScroll = () => {
+      const btnRect = btnEl.getBoundingClientRect();
+      const containerRect = containerEl.getBoundingClientRect();
+      // Show sticky bar when primary add to cart button scrolled past top of modal container
+      if (btnRect.bottom < containerRect.top + 60) {
+        setShowStickyBar(true);
+      } else {
+        setShowStickyBar(false);
+      }
+    };
+
+    containerEl.addEventListener('scroll', handleScroll, { passive: true });
+    return () => containerEl.removeEventListener('scroll', handleScroll);
   }, [product]);
 
   const selectedImage = imageForColor(product, color);
   const gallery = [selectedImage, ...product.images.filter((image) => image !== selectedImage)];
+
   const imageLabel = (image: string) => {
     if (image.includes('details')) return 'Detail view';
     if (image === selectedImage && !product.colorImages?.[color]) return 'Front view';
     const photographedColor = product.colors.find((key) => product.colorImages?.[key] === image);
     return photographedColor ? COLORS[photographedColor].name : 'Front view';
   };
+
   const wished = isWishlisted(product.id);
   const recommendations = PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
 
@@ -56,11 +129,18 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
     onCartClick();
   };
 
+  const scrollSlider = (direction: 'left' | 'right') => {
+    if (!sliderRef.current) return;
+    const offset = direction === 'left' ? -300 : 300;
+    sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+  };
+
   return (
-    <div className="fixed inset-0 z-[70] overflow-y-auto" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-[70] overflow-y-auto" ref={scrollContainerRef} role="dialog" aria-modal="true">
       <div className="absolute inset-0 bg-charcoal-900/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative min-h-full">
-        <div className="mx-auto my-0 max-w-6xl bg-cream-100 sm:my-8">
+      <div className="relative min-h-full pb-16">
+        <div className="mx-auto my-0 max-w-6xl bg-cream-100 sm:my-8 shadow-2xl">
+          {/* Header */}
           <div className="sticky top-0 z-10 flex items-center justify-between border-b border-charcoal-900/8 bg-cream-100/95 px-5 py-4 backdrop-blur-md sm:px-8">
             <span className="font-display text-lg font-medium text-charcoal-900">{product.name}</span>
             <button
@@ -189,8 +269,8 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              {/* Actions & Primary Add to Cart Reference */}
+              <div ref={primaryAddToCartRef} className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <button
                   onClick={handleAddToCart}
                   className={`flex flex-1 items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium transition-all ${
@@ -226,6 +306,7 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
             </div>
           </div>
 
+          {/* Design Story */}
           <section className="border-t border-charcoal-900/10 px-5 py-12 sm:px-8 sm:py-16">
             <div className="grid items-center gap-8 bg-[#eae5dc] lg:grid-cols-[1.15fr_.85fr]">
               <img src={product.images[0]} alt={`${product.name} design story`} className="aspect-[4/3] h-full w-full object-contain p-4" loading="lazy" sizes="(min-width: 1024px) 600px, 100vw" />
@@ -238,6 +319,7 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
             </div>
           </section>
 
+          {/* Specifications & Reviews */}
           <div className="grid gap-10 border-t border-charcoal-900/10 px-5 py-10 sm:px-8 lg:grid-cols-2">
             <section>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-olive-500">Product specification</p>
@@ -262,6 +344,44 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
             </section>
           </div>
 
+          {/* Recently Viewed Slider Section */}
+          {recentlyViewed.length > 0 && (
+            <div className="border-t border-charcoal-900/10 px-5 py-10 sm:px-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-olive-500">History</p>
+                  <h3 className="mt-1 font-display text-2xl font-medium text-charcoal-900">Recently Viewed</h3>
+                </div>
+                <div className="hidden sm:flex items-center gap-2">
+                  <button
+                    onClick={() => scrollSlider('left')}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal-900/15 text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+                    aria-label="Scroll left"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => scrollSlider('right')}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-charcoal-900/15 text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
+                    aria-label="Scroll right"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+              <div
+                ref={sliderRef}
+                className="mt-6 flex gap-5 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
+              >
+                {recentlyViewed.map((p) => (
+                  <div key={p.id} className="w-64 shrink-0 sm:w-72">
+                    <ProductCard product={p} onView={onView} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* You may also like */}
           <div className="border-t border-charcoal-900/8 px-5 py-10 sm:px-8">
             <h3 className="font-display text-2xl font-medium text-charcoal-900">You may also like</h3>
@@ -273,7 +393,54 @@ export function ProductDetail({ product, onClose, onView, onCartClick }: Product
           </div>
         </div>
       </div>
-      {zoomed && <div className="fixed inset-0 z-[90] flex items-center justify-center bg-charcoal-900/90 p-4 sm:p-10" onClick={() => setZoomed(false)} role="dialog" aria-modal="true" aria-label="Expanded product image"><button onClick={() => setZoomed(false)} className="absolute right-5 top-5 rounded-full bg-cream-100 p-3 text-charcoal-900" aria-label="Close expanded image"><X className="h-5 w-5" /></button><img src={gallery[activeImage]} alt={`${product.name} enlarged`} className="max-h-full max-w-full object-contain" onClick={(event) => event.stopPropagation()} /></div>}
+
+      {/* Sticky Add to Cart Bar */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-[80] border-t border-charcoal-900/10 bg-cream-100/95 px-5 py-3 shadow-2xl backdrop-blur-md transition-all duration-300 sm:px-8 sm:py-3.5 ${
+          showStickyBar ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+        }`}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <img src={selectedImage} alt={product.name} className="h-12 w-12 shrink-0 rounded-lg object-contain bg-[#ede9e1] p-1" />
+            <div className="min-w-0">
+              <p className="font-display text-sm font-medium text-charcoal-900 truncate">{product.name}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-charcoal-900">₹{product.price.toLocaleString('en-IN')}</span>
+                <span className="text-[11px] text-charcoal-800/60 hidden sm:inline">• {COLORS[color].name}</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handleAddToCart}
+              className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-medium transition-all ${
+                added ? 'bg-olive-500 text-cream-100' : 'bg-charcoal-900 text-cream-100 hover:bg-charcoal-800'
+              }`}
+            >
+              {added ? <Check className="h-3.5 w-3.5" /> : <ShoppingBag className="h-3.5 w-3.5" />}
+              <span>{added ? 'Added' : 'Add to Cart'}</span>
+            </button>
+            <button
+              onClick={handleBuyNow}
+              className="hidden sm:flex items-center gap-1.5 rounded-full border border-charcoal-900/20 px-4 py-2.5 text-xs font-medium text-charcoal-900 transition-all hover:bg-cream-50"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              <span>Checkout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Image Zoom Modal */}
+      {zoomed && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-charcoal-900/90 p-4 sm:p-10" onClick={() => setZoomed(false)} role="dialog" aria-modal="true" aria-label="Expanded product image">
+          <button onClick={() => setZoomed(false)} className="absolute right-5 top-5 rounded-full bg-cream-100 p-3 text-charcoal-900" aria-label="Close expanded image">
+            <X className="h-5 w-5" />
+          </button>
+          <img src={gallery[activeImage]} alt={`${product.name} enlarged`} className="max-h-full max-w-full object-contain" onClick={(event) => event.stopPropagation()} />
+        </div>
+      )}
     </div>
   );
 }
@@ -286,3 +453,4 @@ function TrustBadge({ icon: Icon, label }: { icon: typeof Truck; label: string }
     </div>
   );
 }
+

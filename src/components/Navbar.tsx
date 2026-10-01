@@ -7,10 +7,19 @@ const NAV_LINKS = [
   { label: 'Shop', href: '#shop' },
   { label: 'Features', href: '#features' },
   { label: 'Technology', href: '#technology' },
+  { label: 'Warranty', href: '/warranty', isWarranty: true },
   { label: 'Reviews', href: '#reviews' },
 ];
 
-export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => void; onWishlistClick: () => void }) {
+export function Navbar({
+  onCartClick,
+  onWishlistClick,
+  onNavigate
+}: {
+  onCartClick: () => void;
+  onWishlistClick: () => void;
+  onNavigate?: (path: string) => void;
+}) {
   const { cartCount, wishlist } = useStore();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,9 +30,16 @@ export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => vo
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
+  const handleNavClick = (link: { label: string; href: string; isWarranty?: boolean }) => {
     setMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    if (link.isWarranty) {
+      onNavigate?.('/warranty');
+    } else {
+      onNavigate?.('/');
+      setTimeout(() => {
+        document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
   };
 
   return (
@@ -35,8 +51,12 @@ export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => vo
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
           <a
-            href="#home"
-            onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate?.('/');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="font-display text-2xl font-semibold tracking-tightish text-charcoal-900"
           >
             NEXUS
@@ -47,7 +67,10 @@ export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => vo
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(link);
+                }}
                 className="text-sm font-medium text-charcoal-800/80 transition-colors hover:text-charcoal-900"
               >
                 {link.label}
@@ -81,7 +104,7 @@ export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => vo
               )}
             </button>
             <button
-              onClick={() => scrollTo('#shop')}
+              onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
               className="hidden rounded-full bg-charcoal-900 px-5 py-2.5 text-sm font-medium text-cream-100 transition-all hover:bg-charcoal-800 hover:shadow-lg sm:inline-block"
             >
               Shop Now
@@ -124,14 +147,17 @@ export function Navbar({ onCartClick, onWishlistClick }: { onCartClick: () => vo
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(link);
+                }}
                 className="rounded-lg px-3 py-3 text-base font-medium text-charcoal-800 transition-colors hover:bg-charcoal-900/5"
               >
                 {link.label}
               </a>
             ))}
             <button
-              onClick={() => scrollTo('#shop')}
+              onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
               className="mt-4 rounded-full bg-charcoal-900 px-5 py-3 text-center text-sm font-medium text-cream-100"
             >
               Shop Now

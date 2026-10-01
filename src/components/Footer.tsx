@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Mail, Instagram, Twitter, Youtube, Check } from 'lucide-react';
 
-export function Footer() {
+export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -55,16 +55,52 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-display text-2xl font-semibold">NEXUS</p>
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate?.('/');
+              }}
+              className="font-display text-2xl font-semibold"
+            >
+              NEXUS
+            </a>
             <p className="mt-3 text-sm leading-relaxed text-cream-100/60">
               Smart backpacks designed for the way you study, work, commute and create.
             </p>
             <p className="mt-3 text-sm text-olive-300">Carry Smarter. Go Further.</p>
           </div>
 
-          <FooterCol title="Shop" links={['All Backpacks', 'New Collection', 'Popular this Week', 'Color Collection']} />
-          <FooterCol title="Company" links={['About NEXUS', 'Technology', 'Reviews', 'Sustainability']} />
-          <FooterCol title="Support" links={['Shipping & Delivery', '30-Day Returns', 'Warranty', 'Contact Us']} />
+          <FooterCol
+            title="Shop"
+            links={[
+              { label: 'All Backpacks', href: '#shop' },
+              { label: 'New Collection', href: '#shop' },
+              { label: 'Popular this Week', href: '#shop' },
+              { label: 'Color Collection', href: '#color-collection' }
+            ]}
+            onNavigate={onNavigate}
+          />
+          <FooterCol
+            title="Company"
+            links={[
+              { label: 'About NEXUS', href: '#home' },
+              { label: 'Technology', href: '#technology' },
+              { label: 'Reviews', href: '#reviews' },
+              { label: 'Sustainability', href: '#features' }
+            ]}
+            onNavigate={onNavigate}
+          />
+          <FooterCol
+            title="Support"
+            links={[
+              { label: 'Shipping & Delivery', href: '#features' },
+              { label: '30-Day Returns', href: '#features' },
+              { label: 'Warranty & Registration', href: '/warranty', isWarranty: true },
+              { label: 'Contact Us', href: '#home' }
+            ]}
+            onNavigate={onNavigate}
+          />
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-cream-100/10 pt-8 sm:flex-row">
@@ -74,7 +110,7 @@ export function Footer() {
             <SocialIcon icon={Youtube} label="YouTube" />
           </div>
           <p className="text-xs text-cream-100/40">
-            © 2026 NEXUS. A fictional brand created for a Digital Marketing academic project. Product photography supplied for this collection.
+            © 2026 NEXUS. Premium Smart Carry & Accessories. All rights reserved.
           </p>
         </div>
       </div>
@@ -82,15 +118,42 @@ export function Footer() {
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: string[] }) {
+function FooterCol({
+  title,
+  links,
+  onNavigate
+}: {
+  title: string;
+  links: { label: string; href: string; isWarranty?: boolean }[];
+  onNavigate?: (path: string) => void;
+}) {
   return (
     <div>
       <p className="text-sm font-semibold text-cream-100">{title}</p>
       <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
-          <li key={link}>
-            <a href="#" onClick={(e) => e.preventDefault()} className="text-sm text-cream-100/55 transition-colors hover:text-cream-100">
-              {link}
+          <li key={link.label}>
+            <a
+              href={link.href}
+              onClick={(e) => {
+                if (link.isWarranty) {
+                  e.preventDefault();
+                  onNavigate?.('/warranty');
+                } else if (link.href.startsWith('#')) {
+                  e.preventDefault();
+                  onNavigate?.('/');
+                  setTimeout(() => {
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }
+              }}
+              className={`text-sm transition-colors ${
+                link.isWarranty
+                  ? 'font-medium text-olive-300 hover:text-cream-100'
+                  : 'text-cream-100/55 hover:text-cream-100'
+              }`}
+            >
+              {link.label}
             </a>
           </li>
         ))}
