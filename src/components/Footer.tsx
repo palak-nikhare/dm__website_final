@@ -1,0 +1,113 @@
+import { useState } from 'react';
+import { Mail, Instagram, Twitter, Youtube, Check } from 'lucide-react';
+
+export function Footer() {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    }
+  };
+
+  return (
+    <footer className="bg-charcoal-900 text-cream-100">
+      {/* Newsletter */}
+      <div className="border-b border-cream-100/10 px-5 py-16 sm:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h3 className="font-display text-3xl font-medium tracking-tightish sm:text-4xl">
+            Get early access to new colors and exclusive offers.
+          </h3>
+          <form onSubmit={handleSubmit} className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-cream-100/40" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                className="w-full rounded-full border border-cream-100/15 bg-charcoal-800 py-3.5 pl-12 pr-4 text-sm text-cream-100 placeholder:text-cream-100/40 focus:border-olive-300/50 focus:outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              className={`rounded-full px-6 py-3.5 text-sm font-medium transition-all ${
+                subscribed ? 'bg-olive-500 text-cream-100' : 'bg-cream-100 text-charcoal-900 hover:bg-cream-50'
+              }`}
+            >
+              {subscribed ? (
+                <span className="flex items-center gap-1.5"><Check className="h-4 w-4" /> Subscribed</span>
+              ) : (
+                'Subscribe'
+              )}
+            </button>
+          </form>
+          <p className="mt-3 text-xs text-cream-100/40">No spam. Just new drops and launch offers.</p>
+        </div>
+      </div>
+
+      {/* Links */}
+      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="font-display text-2xl font-semibold">NEXUS</p>
+            <p className="mt-3 text-sm leading-relaxed text-cream-100/60">
+              Smart backpacks designed for the way you study, work, commute and create.
+            </p>
+            <p className="mt-3 text-sm text-olive-300">Carry Smarter. Go Further.</p>
+          </div>
+
+          <FooterCol title="Shop" links={['All Backpacks', 'New Collection', 'Popular this Week', 'Color Collection']} />
+          <FooterCol title="Company" links={['About NEXUS', 'Technology', 'Reviews', 'Sustainability']} />
+          <FooterCol title="Support" links={['Shipping & Delivery', '30-Day Returns', 'Warranty', 'Contact Us']} />
+        </div>
+
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-cream-100/10 pt-8 sm:flex-row">
+          <div className="flex items-center gap-4">
+            <SocialIcon icon={Instagram} label="Instagram" />
+            <SocialIcon icon={Twitter} label="Twitter" />
+            <SocialIcon icon={Youtube} label="YouTube" />
+          </div>
+          <p className="text-xs text-cream-100/40">
+            © 2026 NEXUS. A fictional brand created for a Digital Marketing academic project. Product photography supplied for this collection.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function FooterCol({ title, links }: { title: string; links: string[] }) {
+  return (
+    <div>
+      <p className="text-sm font-semibold text-cream-100">{title}</p>
+      <ul className="mt-4 space-y-2.5">
+        {links.map((link) => (
+          <li key={link}>
+            <a href="#" onClick={(e) => e.preventDefault()} className="text-sm text-cream-100/55 transition-colors hover:text-cream-100">
+              {link}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SocialIcon({ icon: Icon, label }: { icon: typeof Mail; label: string }) {
+  return (
+    <a
+      href="#"
+      onClick={(e) => e.preventDefault()}
+      aria-label={label}
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-100/15 text-cream-100/70 transition-all hover:border-olive-300/40 hover:text-olive-300"
+    >
+      <Icon className="h-5 w-5" />
+    </a>
+  );
+}
