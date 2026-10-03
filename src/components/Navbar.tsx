@@ -1,25 +1,23 @@
 import { useEffect, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, ShoppingBag, Heart } from 'lucide-react';
 import { useStore } from '@/store/StoreContext';
 
 const NAV_LINKS = [
-  { label: 'Home', href: '#home' },
-  { label: 'Shop', href: '#shop' },
-  { label: 'Features', href: '#features' },
-  { label: 'Technology', href: '#technology' },
-  { label: 'Warranty', href: '/warranty', isWarranty: true },
-  { label: 'Reviews', href: '#reviews' },
+  { label: 'Home', path: '/' },
+  { label: 'Shop', path: '/shop' },
+  { label: 'Features', path: '/features' },
+  { label: 'Technology', path: '/technology' },
+  { label: 'Warranty', path: '/warranty' },
+  { label: 'Reviews', path: '/reviews' },
 ];
 
-export function Navbar({
-  onCartClick,
-  onWishlistClick,
-  onNavigate
-}: {
+interface NavbarProps {
   onCartClick: () => void;
   onWishlistClick: () => void;
-  onNavigate?: (path: string) => void;
-}) {
+}
+
+export function Navbar({ onCartClick, onWishlistClick }: NavbarProps) {
   const { cartCount, wishlist } = useStore();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,51 +28,39 @@ export function Navbar({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (link: { label: string; href: string; isWarranty?: boolean }) => {
-    setMenuOpen(false);
-    if (link.isWarranty) {
-      onNavigate?.('/warranty');
-    } else {
-      onNavigate?.('/');
-      setTimeout(() => {
-        document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-    }
-  };
-
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-cream-100/90 backdrop-blur-md border-b border-cream-300/60 shadow-cozy' : 'bg-transparent'
+          scrolled
+            ? 'bg-cream-100/95 backdrop-blur-md border-b border-cream-300/60 shadow-cozy'
+            : 'bg-cream-100/80 backdrop-blur-xs border-b border-cream-300/40'
         }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4.5 sm:px-10">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate?.('/');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="font-display text-2xl font-semibold tracking-tightish text-espresso-900"
+          <Link
+            to="/"
+            className="font-display text-2xl font-semibold tracking-tightish text-espresso-900 transition-opacity hover:opacity-80"
           >
             NEXUS
-          </a>
+          </Link>
 
-          <div className="hidden items-center gap-9 lg:flex">
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-8 lg:flex">
             {NAV_LINKS.map((link) => (
-              <a
+              <NavLink
                 key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link);
-                }}
-                className="text-sm font-medium text-espresso-700/80 transition-all duration-300 hover:text-terracotta-500 hover:scale-105"
+                to={link.path}
+                className={({ isActive }) =>
+                  `text-sm font-medium transition-all duration-300 hover:text-terracotta-500 hover:scale-105 ${
+                    isActive
+                      ? 'text-terracotta-500 font-semibold border-b-2 border-terracotta-500 pb-0.5'
+                      : 'text-espresso-700/80'
+                  }`
+                }
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </div>
 
@@ -103,12 +89,12 @@ export function Navbar({
                 </span>
               )}
             </button>
-            <button
-              onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
+            <Link
+              to="/shop"
               className="hidden rounded-full bg-espresso-900 px-6 py-2.5 text-sm font-semibold text-cream-50 shadow-cozy transition-all duration-400 hover:bg-espresso-800 hover:shadow-cozy-hover hover:-translate-y-0.5 sm:inline-block"
             >
               Shop Collection
-            </button>
+            </Link>
             <button
               onClick={() => setMenuOpen(true)}
               className="rounded-full p-2 text-espresso-800 transition-colors hover:bg-espresso-900/5 lg:hidden"
@@ -120,7 +106,7 @@ export function Navbar({
         </nav>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile drawer menu */}
       <div
         className={`fixed inset-0 z-[60] lg:hidden ${menuOpen ? 'visible' : 'invisible'}`}
         aria-hidden={!menuOpen}
@@ -137,31 +123,41 @@ export function Navbar({
           }`}
         >
           <div className="flex items-center justify-between border-b border-cream-300/60 pb-4">
-            <span className="font-display text-xl font-semibold text-espresso-900">NEXUS</span>
+            <Link
+              to="/"
+              onClick={() => setMenuOpen(false)}
+              className="font-display text-xl font-semibold text-espresso-900"
+            >
+              NEXUS
+            </Link>
             <button onClick={() => setMenuOpen(false)} className="rounded-full p-2 text-espresso-800 hover:bg-espresso-900/5">
               <X className="h-5 w-5" />
             </button>
           </div>
           <div className="flex flex-col gap-2 pt-6">
             {NAV_LINKS.map((link) => (
-              <a
+              <NavLink
                 key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(link);
-                }}
-                className="rounded-2xl px-4 py-3 text-base font-medium text-espresso-800 transition-colors hover:bg-cream-200/60"
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className={({ isActive }) =>
+                  `rounded-2xl px-4 py-3 text-base font-medium transition-colors ${
+                    isActive
+                      ? 'bg-cream-200 text-terracotta-500 font-semibold'
+                      : 'text-espresso-800 hover:bg-cream-200/60'
+                  }`
+                }
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
-            <button
-              onClick={() => handleNavClick({ label: 'Shop', href: '#shop' })}
+            <Link
+              to="/shop"
+              onClick={() => setMenuOpen(false)}
               className="mt-6 rounded-full bg-espresso-900 px-6 py-3.5 text-center text-sm font-semibold text-cream-50 shadow-cozy"
             >
               Shop Collection
-            </button>
+            </Link>
           </div>
         </div>
       </div>

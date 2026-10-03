@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Instagram, Twitter, Youtube, Check } from 'lucide-react';
 
-export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) {
+export function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -55,16 +56,9 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
       <div className="mx-auto max-w-7xl px-6 py-16 sm:px-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate?.('/');
-              }}
-              className="font-display text-2xl font-semibold"
-            >
+            <Link to="/" className="font-display text-2xl font-semibold hover:text-terracotta-400 transition-colors">
               NEXUS
-            </a>
+            </Link>
             <p className="mt-3 text-sm leading-relaxed text-cream-100/65">
               Smart backpacks designed for the way you study, work, commute and create.
             </p>
@@ -74,32 +68,29 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
           <FooterCol
             title="Shop"
             links={[
-              { label: 'All Backpacks', href: '#shop' },
-              { label: 'New Collection', href: '#shop' },
-              { label: 'Popular this Week', href: '#shop' },
-              { label: 'Color Collection', href: '#color-collection' }
+              { label: 'All Backpacks', path: '/shop' },
+              { label: 'New Collection', path: '/shop' },
+              { label: 'Popular this Week', path: '/shop' },
+              { label: 'Color Collection', path: '/shop' }
             ]}
-            onNavigate={onNavigate}
           />
           <FooterCol
             title="Company"
             links={[
-              { label: 'About NEXUS', href: '#home' },
-              { label: 'Technology', href: '#technology' },
-              { label: 'Reviews', href: '#reviews' },
-              { label: 'Sustainability', href: '#features' }
+              { label: 'About NEXUS', path: '/' },
+              { label: 'Technology', path: '/technology' },
+              { label: 'Reviews', path: '/reviews' },
+              { label: 'Sustainability', path: '/features' }
             ]}
-            onNavigate={onNavigate}
           />
           <FooterCol
             title="Support"
             links={[
-              { label: 'Shipping & Delivery', href: '#features' },
-              { label: '30-Day Returns', href: '#features' },
-              { label: 'Warranty & Registration', href: '/warranty', isWarranty: true },
-              { label: 'Contact Us', href: '#home' }
+              { label: 'Shipping & Delivery', path: '/features' },
+              { label: '30-Day Returns', path: '/features' },
+              { label: 'Warranty & Registration', path: '/warranty', isWarranty: true },
+              { label: 'Contact Us', path: '/' }
             ]}
-            onNavigate={onNavigate}
           />
         </div>
 
@@ -120,12 +111,10 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
 
 function FooterCol({
   title,
-  links,
-  onNavigate
+  links
 }: {
   title: string;
-  links: { label: string; href: string; isWarranty?: boolean }[];
-  onNavigate?: (path: string) => void;
+  links: { label: string; path: string; isWarranty?: boolean }[];
 }) {
   return (
     <div>
@@ -133,20 +122,8 @@ function FooterCol({
       <ul className="mt-4 space-y-2.5">
         {links.map((link) => (
           <li key={link.label}>
-            <a
-              href={link.href}
-              onClick={(e) => {
-                if (link.isWarranty) {
-                  e.preventDefault();
-                  onNavigate?.('/warranty');
-                } else if (link.href.startsWith('#')) {
-                  e.preventDefault();
-                  onNavigate?.('/');
-                  setTimeout(() => {
-                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }
-              }}
+            <Link
+              to={link.path}
               className={`text-sm transition-colors ${
                 link.isWarranty
                   ? 'font-semibold text-terracotta-400 hover:text-cream-50'
@@ -154,7 +131,7 @@ function FooterCol({
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
