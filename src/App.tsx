@@ -15,6 +15,7 @@ import { FeaturesPage } from '@/pages/FeaturesPage';
 import { TechnologyPage } from '@/pages/TechnologyPage';
 import { WarrantyPage } from '@/pages/WarrantyPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
+import { HelpPage } from '@/pages/HelpPage';
 
 import type { Product } from '@/data/products';
 
@@ -37,6 +38,7 @@ function App() {
       <Navbar
         onCartClick={() => setCartOpen(true)}
         onWishlistClick={() => setWishlistOpen(true)}
+        onViewProduct={handleView}
       />
 
       <main className="min-h-screen bg-oat-50">
@@ -47,6 +49,7 @@ function App() {
           <Route path="/technology" element={<TechnologyPage />} />
           <Route path="/warranty" element={<WarrantyPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/help" element={<HelpPage />} />
           <Route path="*" element={<HomePage onView={handleView} />} />
         </Routes>
       </main>

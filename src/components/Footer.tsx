@@ -86,10 +86,11 @@ export function Footer() {
           <FooterCol
             title="Support"
             links={[
-              { label: 'Shipping & Delivery', path: '/features' },
-              { label: '30-Day Returns', path: '/features' },
+              { label: 'Help Center & FAQ', path: '/help' },
+              { label: 'Shipping & Delivery', path: '/help' },
+              { label: '30-Day Returns', path: '/help' },
               { label: 'Warranty & Registration', path: '/warranty', isWarranty: true },
-              { label: 'Contact Us', path: '/' }
+              { label: 'Contact Us', path: '/help' }
             ]}
           />
         </div>
