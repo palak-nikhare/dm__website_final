@@ -1,48 +1,47 @@
-export type ColorKey = 'black'|'charcoal'|'graphite'|'navy'|'olive'|'taupe'|'sand'|'stone'|'brown'|'burgundy'|'cream';
+export type ColorKey = 'black' | 'charcoal' | 'graphite' | 'navy' | 'olive' | 'taupe' | 'sand' | 'stone' | 'brown' | 'burgundy' | 'cream';
 
-export interface ProductReview { name:string; title:string; text:string }
+export interface ProductReview { name: string; title: string; text: string }
 
 export interface Product {
-  id:string;
-  name:string;
-  tagline:string;
-  description:string;
-  longDescription:string;
-  price:number;
-  originalPrice?:number;
-  rating:number;
-  reviews:number;
-  badge?:string;
-  colors:ColorKey[];
-  defaultColor:ColorKey;
-  images:string[];
-  colorImages?:Partial<Record<ColorKey,string>>;
-  dimensions:{height:number;width:number;depth:number};
-  material:string;
-  features:string[];
-  demoReviews:ProductReview[];
-  category:'business'|'commuter'|'creator';
-  popular?:boolean;
-  isNewProduct?:boolean;
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  longDescription: string;
+  price: number;
+  originalPrice?: number;
+  rating: number;
+  reviews: number;
+  badge?: string;
+  colors: ColorKey[];
+  defaultColor: ColorKey;
+  images: string[];
+  colorImages?: Partial<Record<ColorKey, string>>;
+  dimensions: { height: number; width: number; depth: number };
+  material: string;
+  features: string[];
+  demoReviews: ProductReview[];
+  category: 'business' | 'commuter' | 'creator';
+  popular?: boolean;
 }
 
-export const COLORS:Record<ColorKey,{key:ColorKey;name:string;hex:string}>={
-  black:{key:'black',name:'Jet Black',hex:'#191817'},
-  charcoal:{key:'charcoal',name:'Charcoal',hex:'#393735'},
-  graphite:{key:'graphite',name:'Graphite',hex:'#55575a'},
-  navy:{key:'navy',name:'Navy',hex:'#263449'},
-  olive:{key:'olive',name:'Deep Olive',hex:'#56604b'},
-  taupe:{key:'taupe',name:'Taupe',hex:'#958675'},
-  sand:{key:'sand',name:'Sand',hex:'#c6ad88'},
-  stone:{key:'stone',name:'Stone',hex:'#aaa59b'},
-  brown:{key:'brown',name:'Dark Brown',hex:'#4b352a'},
-  burgundy:{key:'burgundy',name:'Burgundy',hex:'#6b3037'},
-  cream:{key:'cream',name:'Cream',hex:'#e9e0cf'}
+export const COLORS: Record<ColorKey, { key: ColorKey; name: string; hex: string }> = {
+  black: { key: 'black', name: 'Jet Black', hex: '#191817' },
+  charcoal: { key: 'charcoal', name: 'Charcoal', hex: '#393735' },
+  graphite: { key: 'graphite', name: 'Graphite', hex: '#55575a' },
+  navy: { key: 'navy', name: 'Navy', hex: '#263449' },
+  olive: { key: 'olive', name: 'Deep Olive', hex: '#56604b' },
+  taupe: { key: 'taupe', name: 'Taupe', hex: '#958675' },
+  sand: { key: 'sand', name: 'Sand', hex: '#c6ad88' },
+  stone: { key: 'stone', name: 'Stone', hex: '#aaa59b' },
+  brown: { key: 'brown', name: 'Dark Brown', hex: '#4b352a' },
+  burgundy: { key: 'burgundy', name: 'Burgundy', hex: '#6b3037' },
+  cream: { key: 'cream', name: 'Cream', hex: '#e9e0cf' }
 };
 
-const R = (name:string, title:string, text:string):ProductReview => ({name, title, text});
+const R = (name: string, title: string, text: string): ProductReview => ({ name, title, text });
 
-export const PRODUCTS:Product[] = [
+export const PRODUCTS: Product[] = [
   {
     id: 'metro',
     name: 'NEXUS Metro',
@@ -333,7 +332,6 @@ export const PRODUCTS:Product[] = [
     badge: 'Signature',
     category: 'business',
     popular: true,
-    isNewProduct: true,
     colors: ['black', 'graphite', 'navy', 'stone'],
     defaultColor: 'black',
     images: ['/images/products/nexus-axis.png'],
@@ -358,7 +356,6 @@ export const PRODUCTS:Product[] = [
     badge: 'Bestseller',
     category: 'commuter',
     popular: true,
-    isNewProduct: true,
     colors: ['black', 'graphite', 'navy', 'olive'],
     defaultColor: 'black',
     images: ['/images/products/nexus-transit-black.png', '/images/products/nexus-transit-graphite.png'],
@@ -386,7 +383,6 @@ export const PRODUCTS:Product[] = [
     reviews: 31,
     category: 'creator',
     popular: false,
-    isNewProduct: true,
     colors: ['charcoal', 'navy', 'taupe', 'sand'],
     defaultColor: 'charcoal',
     images: ['/images/products/nexus-studio.png'],
@@ -411,7 +407,6 @@ export const PRODUCTS:Product[] = [
     badge: 'New',
     category: 'creator',
     popular: true,
-    isNewProduct: true,
     colors: ['black', 'burgundy', 'brown', 'cream'],
     defaultColor: 'black',
     images: ['/images/products/nexus-form.png'],
@@ -422,202 +417,10 @@ export const PRODUCTS:Product[] = [
       R('Ishita Verma', 'Distinct without being loud', 'The flap and silver hardware feel fashion-led, but it remains completely office appropriate.'),
       R('Arjun Nair', 'Easy to organize', 'The separate exterior pockets make keys, cards and earbuds quick to reach.')
     ]
-  },
-  {
-    id: 'tweed-executive',
-    name: 'NEXUS Tweed Executive',
-    tagline: 'Refined heritage tweed tailored for boardroom carry',
-    description: 'A bespoke business backpack combining textured wool-blend tweed with structured tech organization.',
-    longDescription: 'NEXUS Tweed Executive brings bespoke sartorial elegance to modern laptop protection. Crafted with high-grade weather-treated wool tweed and soft plush laptop cushioning, it features dedicated document sleeves and TSA lock compatibility for executive travel.',
-    price: 7499,
-    originalPrice: 8999,
-    rating: 4.9,
-    reviews: 24,
-    badge: 'Executive Class',
-    category: 'business',
-    popular: true,
-    isNewProduct: true,
-    colors: ['charcoal', 'black', 'taupe', 'brown'],
-    defaultColor: 'charcoal',
-    images: ['/images/products/01-tweed-executive.png', '/images/products/01-tweed-executive.jpg'],
-    dimensions: { height: 47, width: 32, depth: 17 },
-    material: 'Weather-treated herringbone tweed with full-grain trim',
-    features: ['Plush shock-proof 15.6" laptop compartment', 'Concealed passport & phone pocket', 'TSA combination lock ready', 'Ergonomic weight-balancing harness'],
-    demoReviews: [
-      R('Vikramaditya Rao', 'Immaculate tailoring', 'The tweed finish turns heads in meetings. Perfect balance of craft and function.')
-    ]
-  },
-  {
-    id: 'rugged-commuter',
-    name: 'NEXUS Rugged Commuter',
-    tagline: 'All-weather resilience engineered for demanding journeys',
-    description: 'Heavy-duty waxed canvas backpack with reinforced corner bumpers and quick-access utility straps.',
-    longDescription: 'NEXUS Rugged Commuter is built for high-mileage daily transit. Combining heavy-tensile waxed canvas with hydrophobic seam-sealing, it keeps tech safe during unexpected downpours while providing rapid access to daily EDC.',
-    price: 6299,
-    originalPrice: 7499,
-    rating: 4.8,
-    reviews: 38,
-    badge: 'Heavy Duty',
-    category: 'commuter',
-    popular: true,
-    isNewProduct: true,
-    colors: ['olive', 'charcoal', 'black', 'sand'],
-    defaultColor: 'olive',
-    images: ['/images/products/02-rugged-commuter.png', '/images/products/02-rugged-commuter.jpg'],
-    dimensions: { height: 48, width: 33, depth: 18 },
-    material: 'Heavy-duty 14oz waxed cotton canvas with reinforced base',
-    features: ['Water-repellent storm flap', 'Reinforced impact-resistant bottom', 'External USB charging access', 'Expandable side bottle sleeve'],
-    demoReviews: [
-      R('Harshvardhan Singh', 'Tough as nails', 'Rode through heavy monsoon downpours without a single drop penetrating.')
-    ]
-  },
-  {
-    id: 'geometric-voyager',
-    name: 'NEXUS Geometric Voyager',
-    tagline: 'Architectural faceting meets expanded travel capacity',
-    description: 'A striking geometric shell designed with precision geometric panelling and lay-flat packing.',
-    longDescription: 'NEXUS Geometric Voyager makes a bold aesthetic statement while providing structured 180-degree clam-shell opening. Its angular outer panels disperse physical impacts, protecting camera gear and high-end laptops.',
-    price: 6899,
-    originalPrice: 7999,
-    rating: 4.7,
-    reviews: 19,
-    badge: 'Architectural',
-    category: 'creator',
-    popular: false,
-    isNewProduct: true,
-    colors: ['graphite', 'black', 'stone'],
-    defaultColor: 'graphite',
-    images: ['/images/products/03-geometric-voyager.png', '/images/products/03-geometric-voyager.jpg'],
-    dimensions: { height: 46, width: 31, depth: 16 },
-    material: 'Faceted high-density TPU composite shell',
-    features: ['180-degree lay-flat opening', 'Architectural impact-dispersing paneling', 'Fleece-lined camera sleeve', 'Hidden anti-theft zipper alignment'],
-    demoReviews: [
-      R('Neha Kapoor', 'Stunning design', 'The geometric facets look futuristic and hold structure effortlessly.')
-    ]
-  },
-  {
-    id: 'sustainable-corduroy',
-    name: 'NEXUS Sustainable Corduroy',
-    tagline: 'Organic tactile comfort with eco-friendly engineering',
-    description: 'A soft, ribbed organic corduroy backpack with recycled lining and cozy vintage charm.',
-    longDescription: 'NEXUS Sustainable Corduroy marries soft, warm tactile comfort with modern digital organization. Built using 100% organic cotton corduroy and recycled PET liner, it brings relaxed, inviting warmth to campus and creative studios.',
-    price: 5399,
-    originalPrice: 6499,
-    rating: 4.8,
-    reviews: 29,
-    badge: 'Eco-Textile',
-    category: 'creator',
-    popular: true,
-    isNewProduct: true,
-    colors: ['sand', 'taupe', 'cream', 'brown'],
-    defaultColor: 'sand',
-    images: ['/images/products/04-sustainable-corduroy.png', '/images/products/04-sustainable-corduroy.jpg'],
-    dimensions: { height: 44, width: 30, depth: 15 },
-    material: '100% Organic wide-wale cotton corduroy with recycled PET lining',
-    features: ['Ultra-soft padded laptop sleeve', 'Recycled ocean-bound plastic liner', 'Breathable lumbar cushion', 'Smooth antique brass hardware'],
-    demoReviews: [
-      R('Ananya Deshmukh', 'So soft and cozy', 'The corduroy feel is lovely and warm. Perfect everyday bag for university.')
-    ]
-  },
-  {
-    id: 'upcycled-sailcloth',
-    name: 'NEXUS Upcycled Sailcloth',
-    tagline: 'Featherlight waterproof performance derived from technical sails',
-    description: 'An ultra-light, waterproof pack constructed from high-tenacity ripstop sailcloth.',
-    longDescription: 'NEXUS Upcycled Sailcloth delivers unmatched strength-to-weight performance. Built with recycled technical sailcloth, this pack is completely waterproof, exceptionally durable, and weighs less than 700 grams.',
-    price: 8299,
-    originalPrice: 9599,
-    rating: 4.9,
-    reviews: 15,
-    badge: 'Ultra Lightweight',
-    category: 'commuter',
-    popular: false,
-    isNewProduct: true,
-    colors: ['stone', 'cream', 'navy', 'graphite'],
-    defaultColor: 'stone',
-    images: ['/images/products/05-upcycled-sailcloth.png', '/images/products/05-upcycled-sailcloth.jpg'],
-    dimensions: { height: 46, width: 31, depth: 16 },
-    material: 'High-tenacity laminated upcycled sailcloth fabric',
-    features: ['100% Waterproof seam welding', 'Featherlight 680g total pack weight', 'Aero-mesh ergonomic shoulder straps', 'Roll-top quick expansion'],
-    demoReviews: [
-      R('Rohan Kulkarni', 'Weightless feel', 'You barely feel it on your back even with a 15-inch laptop inside.')
-    ]
-  },
-  {
-    id: 'velocity-stealth',
-    name: 'NEXUS Velocity Stealth',
-    tagline: 'Aerodynamic black-ops profile for high-speed transit',
-    description: 'A matte black aerodynamic backpack with concealed magnetic closures and tactical organization.',
-    longDescription: 'NEXUS Velocity Stealth is engineered for fast-moving urban professionals. Featuring a matte black anti-reflective shell, magnetic Fidlock snaps, and quick-draw side pockets for total digital efficiency.',
-    price: 7899,
-    originalPrice: 9199,
-    rating: 4.9,
-    reviews: 42,
-    badge: 'Aero Series',
-    category: 'commuter',
-    popular: true,
-    isNewProduct: true,
-    colors: ['black', 'charcoal', 'graphite'],
-    defaultColor: 'black',
-    images: ['/images/products/06-velocity-stealth.png', '/images/products/06-velocity-stealth.jpg'],
-    dimensions: { height: 47, width: 31, depth: 17 },
-    material: 'Matte-finish hydrophobic TPU shell with ballistic backing',
-    features: ['Magnetic quick-snap Fidlock hardware', 'Concealed rapid-draw phone pouch', 'Hydrophobic rain shield coating', 'Breathable airflow back padding'],
-    demoReviews: [
-      R('Aditya Verma', 'Sleek and stealthy', 'The matte black finish and magnetic hardware are incredible.')
-    ]
-  },
-  {
-    id: 'embroidered-botanical',
-    name: 'NEXUS Embroidered Botanical',
-    tagline: 'Artisanal embroidery woven on premium weather-proof canvas',
-    description: 'A designer backpack featuring delicate, high-density botanical embroidery and brass accents.',
-    longDescription: 'NEXUS Embroidered Botanical merges fine artisan needlework with executive carry standards. Detailed with high-density floral stitching, padded computer protection, and warm brass zippers.',
-    price: 4999,
-    originalPrice: 5999,
-    rating: 4.8,
-    reviews: 31,
-    badge: 'Artisan Craft',
-    category: 'creator',
-    popular: false,
-    isNewProduct: true,
-    colors: ['cream', 'sand', 'olive', 'taupe'],
-    defaultColor: 'cream',
-    images: ['/images/products/07-embroidered-botanical.png', '/images/products/07-embroidered-botanical.jpg'],
-    dimensions: { height: 43, width: 29, depth: 14 },
-    material: 'Custom embroidered cotton-poly canvas with brass hardware',
-    features: ['High-density thread embroidery', 'Padded 14" laptop & tablet sleeve', 'Antique brass zipper pulls', 'Reinforced top tote handle'],
-    demoReviews: [
-      R('Priya Sundaram', 'A work of art', 'The embroidery quality is stunning. Gets compliments everywhere I go.')
-    ]
-  },
-  {
-    id: 'apex-cyber',
-    name: 'NEXUS Apex Cyber',
-    tagline: 'Cyber-shield armor for futuristic digital protection',
-    description: 'An ultra-rugged cybernetic hard-shell pack equipped with RFID blocking and TSA lock.',
-    longDescription: 'NEXUS Apex Cyber represents the outer limit of personal tech security. Constructed with a reinforced cybernetic armor faceplate, RFID-shielded internal vaults, and heavy-duty shock absorption for high-value gear.',
-    price: 9499,
-    originalPrice: 10999,
-    rating: 5.0,
-    reviews: 18,
-    badge: 'Cyber Shield',
-    category: 'business',
-    popular: true,
-    isNewProduct: true,
-    colors: ['black', 'graphite', 'navy'],
-    defaultColor: 'black',
-    images: ['/images/products/08-apex-cyber.png', '/images/products/08-apex-cyber.jpg'],
-    dimensions: { height: 49, width: 33, depth: 19 },
-    material: 'Molded cyber-armor EVA casing with carbon-weave backing',
-    features: ['Cybernetic impact-resistant armor plate', 'Full RFID-blocking security pouch', 'TSA combination zipper lock', 'Integrated USB-C quick-charge port'],
-    demoReviews: [
-      R('Devrat Sharma', 'Absolute armor', 'Nothing touches my high-end gaming laptop inside this bag. World-class build.')
-    ]
   }
 ];
 
-export const imageForColor = (product:Product, color:ColorKey) => product.colorImages?.[color] ?? product.images[0];
+export const imageForColor = (product: Product, color: ColorKey) => product.colorImages?.[color] ?? product.images[0];
 export const HERO_IMAGE = '/nexus_backpacks/01-metro.png';
 export const OPEN_BAG_IMAGE = '/nexus_backpacks/02-executive.png';
 export const FLAT_LAY_IMAGE = '/nexus_backpacks/05-apex.png';

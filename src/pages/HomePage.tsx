@@ -5,6 +5,7 @@ import { PopularThisWeek } from '@/components/PopularThisWeek';
 import { Lifestyle } from '@/components/Lifestyle';
 import { ColorCollection } from '@/components/ColorCollection';
 import { PromoBanner } from '@/components/PromoBanner';
+import { SpecialOffers } from '@/components/SpecialOffers';
 import type { Product } from '@/data/products';
 
 interface HomePageProps {
@@ -24,6 +25,7 @@ export function HomePage({ onView }: HomePageProps) {
       <PopularThisWeek onView={onView} />
       <Lifestyle />
       <ColorCollection onView={onView} />
+      <SpecialOffers />
       <PromoBanner onShopClick={() => navigate('/shop')} />
     </>
   );
