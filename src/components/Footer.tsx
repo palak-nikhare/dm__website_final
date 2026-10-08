@@ -86,6 +86,7 @@ export function Footer() {
           <FooterCol
             title="Support"
             links={[
+              { label: 'My Orders & Tracking', path: '/orders' },
               { label: 'Help Center & FAQ', path: '/help' },
               { label: 'Shipping & Delivery', path: '/help' },
               { label: '30-Day Returns', path: '/help' },

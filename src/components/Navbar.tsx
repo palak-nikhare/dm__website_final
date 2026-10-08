@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, ShoppingBag, Heart, Search, Sparkles } from 'lucide-react';
+import { Menu, X, ShoppingBag, Heart, Search, Sparkles, Package } from 'lucide-react';
 import { useStore } from '@/store/StoreContext';
 import { PRODUCTS, COLORS, type Product } from '@/data/products';
 
@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: 'Warranty', path: '/warranty' },
   { label: 'Reviews', path: '/reviews' },
   { label: 'Help', path: '/help' },
+  { label: 'My Orders', path: '/orders' },
 ];
 
 interface NavbarProps {
@@ -201,6 +202,15 @@ export function Navbar({ onCartClick, onWishlistClick, onViewProduct }: NavbarPr
                 </div>
               )}
             </div>
+
+            <Link
+              to="/orders"
+              className="relative rounded-full p-2.5 text-espresso-800 transition-colors hover:bg-espresso-900/5 hover:text-terracotta-500"
+              aria-label="My Orders"
+              title="My Orders"
+            >
+              <Package className="h-5 w-5" />
+            </Link>
 
             <button
               onClick={onWishlistClick}

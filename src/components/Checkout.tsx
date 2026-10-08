@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Check, CreditCard, Banknote, Truck } from 'lucide-react';
 import { useStore } from '@/store/StoreContext';
 
@@ -8,9 +9,11 @@ interface CheckoutProps {
 }
 
 export function Checkout({ open, onClose }: CheckoutProps) {
-  const { cartSubtotal, clearCart } = useStore();
+  const { cart, cartSubtotal, clearCart } = useStore();
+  const navigate = useNavigate();
   const [placed, setPlaced] = useState(false);
   const [payment, setPayment] = useState('card');
+  const [newOrderNum, setNewOrderNum] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -27,6 +30,55 @@ export function Checkout({ open, onClose }: CheckoutProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const orderNum = `NX-${Math.floor(100000 + Math.random() * 900000)}`;
+    setNewOrderNum(orderNum);
+
+    // Save order into localStorage
+    try {
+      const existing = localStorage.getItem('nexus_orders');
+      const orders = existing ? JSON.parse(existing) : [];
+      const newOrder = {
+        id: `ord-${Date.now()}`,
+        orderNumber: orderNum,
+        date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        status: 'shipped', // highlighted at Order Shipped
+        statusLabel: 'Order Shipped',
+        estimatedDelivery: 'In 3-4 business days',
+        carrier: 'Blue Dart Apex Express',
+        trackingNumber: `BD-${Math.floor(1000000000 + Math.random() * 9000000000)}IN`,
+        currentCheckpoint: 'Dispatched from Central Fulfillment Hub • In Transit',
+        lastUpdated: 'Just now',
+        items: cart.length > 0 ? cart.map((item) => ({
+          productId: item.productId,
+          productName: item.productName,
+          color: item.colorName,
+          quantity: item.quantity,
+          price: item.price,
+          image: item.image,
+        })) : [
+          {
+            productId: 'executive',
+            productName: 'NEXUS Executive',
+            color: 'Jet Black',
+            quantity: 1,
+            price: 6499,
+            image: '/nexus_backpacks/02-executive.png',
+          }
+        ],
+        shippingAddress: {
+          name: 'Aditya Sharma',
+          street: 'Flat 402, Oakwood Enclave, 12th Main Road, Indiranagar',
+          city: 'Bengaluru, Karnataka',
+          pin: '560038',
+        },
+        totalAmount: total > 0 ? total : 6499,
+        paymentMethod: payment === 'card' ? 'Credit/Debit Card' : payment === 'upi' ? 'UPI' : 'Cash on Delivery',
+      };
+      localStorage.setItem('nexus_orders', JSON.stringify([newOrder, ...orders]));
+    } catch {
+      // ignore
+    }
+
     setPlaced(true);
     clearCart();
   };
@@ -44,20 +96,34 @@ export function Checkout({ open, onClose }: CheckoutProps) {
           </div>
 
           {placed ? (
-            <div className="flex flex-col items-center px-8 py-20 text-center">
+            <div className="flex flex-col items-center px-8 py-16 text-center">
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-sage-100 text-sage-600 shadow-sm">
                 <Check className="h-9 w-9" />
               </div>
               <h3 className="mt-6 font-display text-3xl font-semibold text-espresso-900">Order Placed!</h3>
-              <p className="mt-3 text-sm text-espresso-700/70 max-w-md leading-relaxed">
-                This is a demo checkout showcase. No payment was processed and no order was shipped.
+              <p className="mt-2 text-sm font-mono font-bold text-terracotta-600">
+                Order #{newOrderNum}
               </p>
-              <button
-                onClick={onClose}
-                className="mt-8 rounded-full bg-espresso-900 px-8 py-3.5 text-sm font-semibold text-cream-50 hover:bg-espresso-800 shadow-cozy"
-              >
-                Continue Exploring
-              </button>
+              <p className="mt-2 text-sm text-espresso-700/70 max-w-md leading-relaxed">
+                Thank you! Your order has been placed and is currently in transit. You can track real-time shipment progress under My Orders.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
+                <button
+                  onClick={() => {
+                    onClose();
+                    navigate('/orders');
+                  }}
+                  className="rounded-full bg-espresso-900 px-7 py-3.5 text-sm font-semibold text-cream-50 hover:bg-espresso-800 shadow-cozy transition-all"
+                >
+                  Track in My Orders →
+                </button>
+                <button
+                  onClick={onClose}
+                  className="rounded-full border border-cream-300/80 bg-oat-50 px-6 py-3.5 text-sm font-semibold text-espresso-900 hover:bg-cream-100 shadow-sm transition-all"
+                >
+                  Continue Exploring
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10">

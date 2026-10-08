@@ -16,6 +16,7 @@ import { TechnologyPage } from '@/pages/TechnologyPage';
 import { WarrantyPage } from '@/pages/WarrantyPage';
 import { ReviewsPage } from '@/pages/ReviewsPage';
 import { HelpPage } from '@/pages/HelpPage';
+import { OrdersPage } from '@/pages/OrdersPage';
 
 import type { Product } from '@/data/products';
 
@@ -45,6 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage onView={handleView} />} />
           <Route path="/shop" element={<ShopPage onView={handleView} />} />
+          <Route path="/orders" element={<OrdersPage />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/technology" element={<TechnologyPage />} />
           <Route path="/warranty" element={<WarrantyPage />} />
