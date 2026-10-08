@@ -23,6 +23,7 @@ export interface Product {
   demoReviews: ProductReview[];
   category: 'business' | 'commuter' | 'creator';
   popular?: boolean;
+  isNewProduct?: boolean;
 }
 
 export const COLORS: Record<ColorKey, { key: ColorKey; name: string; hex: string }> = {

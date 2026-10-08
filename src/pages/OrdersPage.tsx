@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Package,
@@ -9,11 +9,8 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowRight,
-  ExternalLink,
   ShieldCheck,
-  Calendar,
   CreditCard,
-  AlertCircle,
   Copy,
   Check
 } from 'lucide-react';
@@ -121,7 +118,7 @@ const TRACKING_STAGES = [
 ];
 
 export function OrdersPage() {
-  const [orders, setOrders] = useState<OrderItem[]>(() => {
+  const [orders] = useState<OrderItem[]>(() => {
     try {
       const stored = localStorage.getItem('nexus_orders');
       if (stored) {

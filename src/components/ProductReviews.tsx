@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Stars } from '@/components/Stars';
-import { PenSquare, CheckCircle2, ShieldCheck, X, Sparkles, MessageSquare } from 'lucide-react';
+import { PenSquare, CheckCircle2, X, Sparkles, MessageSquare } from 'lucide-react';
 import type { Product } from '@/data/products';
 
 export interface ReviewItem {
@@ -31,7 +31,7 @@ const INITIAL_MOCK_REVIEWS: Record<string, ReviewItem[]> = {
     {
       id: 'rev-2',
       name: 'Elena Vance',
-      nameLocation: 'Berlin, DE',
+      location: 'Berlin, DE',
       rating: 5,
       date: 'September 12, 2026',
       title: 'Game changer for long travel layovers',

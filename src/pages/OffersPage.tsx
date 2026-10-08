@@ -5,8 +5,6 @@ import {
   Copy,
   Check,
   Gift,
-  Percent,
-  Truck,
   Sparkles,
   ArrowRight,
   ShieldCheck,
